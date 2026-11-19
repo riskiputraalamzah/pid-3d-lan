@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pid-3d-lan.vercel.app/sitemap.xml

@@ -1,0 +1,25 @@
+{
+  "name": "Lab 3D LAN Tester & Kabel UTP — Simulator Alat Ukur TJKT",
+  "short_name": "Lab 3D LAN",
+  "description": "Simulator 3D interaktif LAN Tester dan perakitan kabel UTP RJ-45 (T568B/T568A) untuk pembelajaran Dasar-Dasar TJKT Fase E.",
+  "lang": "id-ID",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#EEF2F6",
+  "theme_color": "#0284C7",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
