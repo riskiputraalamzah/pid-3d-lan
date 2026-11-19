@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" width="820" height="300" role="img" aria-label="Panduan Urutan Warna Kabel UTP Standar T568B dan T568A">
+  <rect x="6" y="6" width="808" height="288" rx="18" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="410" y="38" font-family="sans-serif" font-size="16" font-weight="bold" fill="#0F172A" text-anchor="middle">STANDAR PENGKABELAN UTP (KLIP RJ-45 DI BAWAH, PIN 1 DARI KIRI)</text>
+
+  <!-- T568B Panel -->
+  <rect x="26" y="56" width="372" height="218" rx="14" fill="#FFFFFF" stroke="#0284C7" stroke-width="2"/>
+  <rect x="26" y="56" width="372" height="34" rx="12" fill="#0284C7"/>
+  <text x="212" y="78" font-family="sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">T568B (Standar Umum Straight-Through)</text>
+
+  <!-- 8 wires T568B -->
+  <!-- 1: PO -->
+  <rect x="44" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="3"/>
+  <line x1="46" y1="126" x2="76" y2="112" stroke="#F97316" stroke-width="6"/>
+  <line x1="46" y1="156" x2="76" y2="142" stroke="#F97316" stroke-width="6"/>
+  <line x1="46" y1="186" x2="76" y2="172" stroke="#F97316" stroke-width="6"/>
+  <text x="61" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">1</text>
+  <text x="61" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-O</text>
+
+  <!-- 2: O -->
+  <rect x="86" y="106" width="34" height="110" rx="6" fill="#F97316" stroke="#C2410C" stroke-width="2"/>
+  <text x="103" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">2</text>
+  <text x="103" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">O</text>
+
+  <!-- 3: PH -->
+  <rect x="128" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#16A34A" stroke-width="3"/>
+  <line x1="130" y1="126" x2="160" y2="112" stroke="#16A34A" stroke-width="6"/>
+  <line x1="130" y1="156" x2="160" y2="142" stroke="#16A34A" stroke-width="6"/>
+  <line x1="130" y1="186" x2="160" y2="172" stroke="#16A34A" stroke-width="6"/>
+  <text x="145" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">3</text>
+  <text x="145" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-H</text>
+
+  <!-- 4: B -->
+  <rect x="170" y="106" width="34" height="110" rx="6" fill="#2563EB" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="187" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">4</text>
+  <text x="187" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">B</text>
+
+  <!-- 5: PB -->
+  <rect x="212" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <line x1="214" y1="126" x2="244" y2="112" stroke="#2563EB" stroke-width="6"/>
+  <line x1="214" y1="156" x2="244" y2="142" stroke="#2563EB" stroke-width="6"/>
+  <line x1="214" y1="186" x2="244" y2="172" stroke="#2563EB" stroke-width="6"/>
+  <text x="229" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">5</text>
+  <text x="229" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-B</text>
+
+  <!-- 6: H -->
+  <rect x="254" y="106" width="34" height="110" rx="6" fill="#16A34A" stroke="#15803D" stroke-width="2"/>
+  <text x="271" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">6</text>
+  <text x="271" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">H</text>
+
+  <!-- 7: PC -->
+  <rect x="296" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#92400E" stroke-width="3"/>
+  <line x1="298" y1="126" x2="328" y2="112" stroke="#92400E" stroke-width="6"/>
+  <line x1="298" y1="156" x2="328" y2="142" stroke="#92400E" stroke-width="6"/>
+  <line x1="298" y1="186" x2="328" y2="172" stroke="#92400E" stroke-width="6"/>
+  <text x="313" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">7</text>
+  <text x="313" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-C</text>
+
+  <!-- 8: C -->
+  <rect x="338" y="106" width="34" height="110" rx="6" fill="#92400E" stroke="#78350F" stroke-width="2"/>
+  <text x="355" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">8</text>
+  <text x="355" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">C</text>
+
+  <!-- T568A Panel -->
+  <rect x="422" y="56" width="372" height="218" rx="14" fill="#FFFFFF" stroke="#059669" stroke-width="2"/>
+  <rect x="422" y="56" width="372" height="34" rx="12" fill="#059669"/>
+  <text x="608" y="78" font-family="sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">T568A (Pasangan Ujung Crossover)</text>
+
+  <!-- 1: PH -->
+  <rect x="440" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#16A34A" stroke-width="3"/>
+  <line x1="442" y1="126" x2="472" y2="112" stroke="#16A34A" stroke-width="6"/>
+  <line x1="442" y1="156" x2="472" y2="142" stroke="#16A34A" stroke-width="6"/>
+  <line x1="442" y1="186" x2="472" y2="172" stroke="#16A34A" stroke-width="6"/>
+  <text x="457" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">1</text>
+  <text x="457" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-H</text>
+
+  <!-- 2: H -->
+  <rect x="482" y="106" width="34" height="110" rx="6" fill="#16A34A" stroke="#15803D" stroke-width="2"/>
+  <text x="499" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">2</text>
+  <text x="499" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">H</text>
+
+  <!-- 3: PO -->
+  <rect x="524" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#F97316" stroke-width="3"/>
+  <line x1="526" y1="126" x2="556" y2="112" stroke="#F97316" stroke-width="6"/>
+  <line x1="526" y1="156" x2="556" y2="142" stroke="#F97316" stroke-width="6"/>
+  <line x1="526" y1="186" x2="556" y2="172" stroke="#F97316" stroke-width="6"/>
+  <text x="541" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">3</text>
+  <text x="541" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-O</text>
+
+  <!-- 4: B -->
+  <rect x="566" y="106" width="34" height="110" rx="6" fill="#2563EB" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="583" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">4</text>
+  <text x="583" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">B</text>
+
+  <!-- 5: PB -->
+  <rect x="608" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <line x1="610" y1="126" x2="640" y2="112" stroke="#2563EB" stroke-width="6"/>
+  <line x1="610" y1="156" x2="640" y2="142" stroke="#2563EB" stroke-width="6"/>
+  <line x1="610" y1="186" x2="640" y2="172" stroke="#2563EB" stroke-width="6"/>
+  <text x="625" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">5</text>
+  <text x="625" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-B</text>
+
+  <!-- 6: O -->
+  <rect x="650" y="106" width="34" height="110" rx="6" fill="#F97316" stroke="#C2410C" stroke-width="2"/>
+  <text x="667" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">6</text>
+  <text x="667" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">O</text>
+
+  <!-- 7: PC -->
+  <rect x="692" y="106" width="34" height="110" rx="6" fill="#FFFFFF" stroke="#92400E" stroke-width="3"/>
+  <line x1="694" y1="126" x2="724" y2="112" stroke="#92400E" stroke-width="6"/>
+  <line x1="694" y1="156" x2="724" y2="142" stroke="#92400E" stroke-width="6"/>
+  <line x1="694" y1="186" x2="724" y2="172" stroke="#92400E" stroke-width="6"/>
+  <text x="709" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">7</text>
+  <text x="709" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">P-C</text>
+
+  <!-- 8: C -->
+  <rect x="734" y="106" width="34" height="110" rx="6" fill="#92400E" stroke="#78350F" stroke-width="2"/>
+  <text x="751" y="236" font-family="monospace" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">8</text>
+  <text x="751" y="254" font-family="sans-serif" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">C</text>
+</svg>

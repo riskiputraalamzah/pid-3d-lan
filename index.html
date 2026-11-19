@@ -1,0 +1,4517 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="daylight">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lab 3D Alat Ukur TKJ — Simulator LAN Tester &amp; Kabel UTP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root {
+    --font-scale: 1;
+    --line-height: 1.58;
+    --letter-spacing: 0em;
+
+    /* Precision Hardware Lab — Daylight Workbench */
+    --bg-canvas: #EEF2F6;
+    --bg-dot: #CBD5E1;
+    --surface: rgba(255, 255, 255, 0.94);
+    --surface-solid: #FFFFFF;
+    --surface-subtle: #F8FAFC;
+    --surface-muted: #E2E8F0;
+    --ink: #0F172A;
+    --ink-muted: #475569;
+    --ink-inverse: #FFFFFF;
+    --border: #CBD5E1;
+    --border-strong: #94A3B8;
+
+    --accent: #0284C7;
+    --accent-hover: #0369A1;
+    --accent-soft: #E0F2FE;
+    --accent-border: #7DD3FC;
+    --accent-ink: #0C4A6E;
+
+    --emerald: #059669;
+    --emerald-soft: #ECFDF5;
+    --emerald-border: #6EE7B7;
+    --emerald-ink: #065F46;
+
+    --amber: #D97706;
+    --amber-soft: #FFFBEB;
+    --amber-border: #FCD34D;
+    --amber-ink: #92400E;
+
+    --crimson: #DC2626;
+    --crimson-soft: #FEF2F2;
+    --crimson-border: #FCA5A5;
+    --crimson-ink: #991B1B;
+
+    --violet: #7C3AED;
+    --violet-soft: #F5F3FF;
+    --violet-border: #C4B5FD;
+    --violet-ink: #5B21B6;
+
+    --stage-bg: radial-gradient(circle at 50% 30%, #F8FAFC 0%, #E2E8F0 65%, #DBEAFE 100%);
+    --hud-bg: rgba(15, 23, 42, 0.86);
+    --hud-text: #F8FAFC;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 12px 28px -4px rgba(15, 23, 42, 0.10), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 20px 44px -8px rgba(15, 23, 42, 0.18), 0 8px 16px -4px rgba(15, 23, 42, 0.08);
+    --ring: 0 0 0 3px rgba(2, 132, 199, 0.38);
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 20px;
+  }
+
+  [data-theme="slate"] {
+    --bg-canvas: #090E1A;
+    --bg-dot: #1E293B;
+    --surface: rgba(15, 23, 42, 0.92);
+    --surface-solid: #111827;
+    --surface-subtle: #1E293B;
+    --surface-muted: #334155;
+    --ink: #F8FAFC;
+    --ink-muted: #94A3B8;
+    --ink-inverse: #090E1A;
+    --border: #273449;
+    --border-strong: #475569;
+
+    --accent: #38BDF8;
+    --accent-hover: #0EA5E9;
+    --accent-soft: rgba(56, 189, 248, 0.14);
+    --accent-border: #0284C7;
+    --accent-ink: #BAE6FD;
+
+    --emerald: #34D399;
+    --emerald-soft: rgba(52, 211, 153, 0.14);
+    --emerald-border: #059669;
+    --emerald-ink: #A7F3D0;
+
+    --amber: #FBBF24;
+    --amber-soft: rgba(251, 191, 36, 0.14);
+    --amber-border: #D97706;
+    --amber-ink: #FDE68A;
+
+    --crimson: #F87171;
+    --crimson-soft: rgba(248, 113, 113, 0.14);
+    --crimson-border: #DC2626;
+    --crimson-ink: #FECACA;
+
+    --violet: #A78BFA;
+    --violet-soft: rgba(167, 139, 250, 0.15);
+    --violet-border: #7C3AED;
+    --violet-ink: #DDD6FE;
+
+    --stage-bg: radial-gradient(circle at 50% 35%, #1E293B 0%, #0F172A 62%, #060911 100%);
+    --hud-bg: rgba(9, 14, 26, 0.88);
+    --hud-text: #F8FAFC;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.48);
+    --shadow-lg: 0 22px 48px rgba(0, 0, 0, 0.65);
+    --ring: 0 0 0 3px rgba(56, 189, 248, 0.45);
+  }
+
+  [data-theme="contrast"] {
+    --bg-canvas: #000000;
+    --bg-dot: #262626;
+    --surface: #0A0A0A;
+    --surface-solid: #0A0A0A;
+    --surface-subtle: #141414;
+    --surface-muted: #262626;
+    --ink: #FFFFFF;
+    --ink-muted: #FEF08A;
+    --ink-inverse: #000000;
+    --border: #FFFFFF;
+    --border-strong: #FFE600;
+
+    --accent: #FFE600;
+    --accent-hover: #FEF08A;
+    --accent-soft: #1F1B00;
+    --accent-border: #FFE600;
+    --accent-ink: #FFE600;
+
+    --emerald: #00FF88;
+    --emerald-soft: #002916;
+    --emerald-border: #00FF88;
+    --emerald-ink: #00FF88;
+
+    --amber: #FFB700;
+    --amber-soft: #2B1F00;
+    --amber-border: #FFB700;
+    --amber-ink: #FFB700;
+
+    --crimson: #FF5C77;
+    --crimson-soft: #33000B;
+    --crimson-border: #FF5C77;
+    --crimson-ink: #FF8FA3;
+
+    --violet: #E0B0FF;
+    --violet-soft: #260040;
+    --violet-border: #E0B0FF;
+    --violet-ink: #E0B0FF;
+
+    --stage-bg: #000000;
+    --hud-bg: #000000;
+    --hud-text: #FFE600;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: 0 0 0 2px #FFE600;
+    --ring: 0 0 0 4px #FFE600;
+  }
+
+  html.reading-aid {
+    --line-height: 1.88;
+    --letter-spacing: 0.04em;
+  }
+
+  html.reduced-motion *,
+  html.reduced-motion *::before,
+  html.reduced-motion *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--ink-inverse);
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+  }
+
+  html {
+    font-size: calc(16px * var(--font-scale));
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-canvas);
+    background-image: radial-gradient(var(--bg-dot) 1.05px, transparent 1.05px);
+    background-size: 22px 22px;
+    color: var(--ink);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: clip;
+    caret-color: var(--accent);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, .display-font {
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .mono, .tabular {
+    font-family: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+  }
+
+  /* Consistent SVG Icon System */
+  .ico {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .ico-sm { width: 15px; height: 15px; }
+  .ico-lg { width: 22px; height: 22px; }
+  .ico-xl { width: 26px; height: 26px; }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 8px;
+    background: var(--accent); color: var(--ink-inverse);
+    padding: 10px 16px; border-radius: 10px; font-weight: 800; z-index: 1000;
+    text-decoration: none;
+  }
+  .skip-link:focus { left: 12px; }
+
+  /* ================= CLEAN TOP HEADER (NO A11Y CLUTTER) ================= */
+  .topbar {
+    position: sticky; top: 0; z-index: 120;
+    background: var(--surface);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1.5px solid var(--border);
+    padding: 10px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .topbar-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .brand {
+    display: flex; align-items: center; gap: 11px; min-width: 0;
+  }
+
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: var(--accent);
+    color: var(--ink-inverse);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  }
+
+  [data-theme="contrast"] .brand-mark {
+    box-shadow: none;
+  }
+
+  .brand-text { min-width: 0; }
+  .brand-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem; font-weight: 700; line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .brand-sub {
+    font-size: 0.75rem; color: var(--ink-muted); font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .top-actions {
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+  }
+
+  .mission-pill-btn {
+    min-height: 40px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.16s ease;
+  }
+  .mission-pill-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .mission-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--emerald);
+  }
+
+  .t-btn {
+    min-height: 40px; min-width: 40px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    color: var(--ink);
+    font-size: 0.8rem; font-weight: 700;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .t-btn:hover { background: var(--surface-muted); border-color: var(--border-strong); }
+  .t-btn.active {
+    background: var(--accent); color: var(--ink-inverse); border-color: var(--accent);
+  }
+
+  /* ================= STEPPER BAR ================= */
+  .stepper-strip {
+    background: var(--surface-solid);
+    border-bottom: 1.5px solid var(--border);
+    padding: 8px 18px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .stepper-strip::-webkit-scrollbar { display: none; }
+
+  .stepper-track {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+  }
+
+  .step-chip {
+    flex: 1 0 auto;
+    min-width: 148px;
+    min-height: 46px;
+    padding: 7px 12px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    color: var(--ink-muted);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    text-align: left;
+    transition: all 0.18s ease;
+  }
+  .step-chip:hover { border-color: var(--accent); color: var(--ink); }
+  .step-chip.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .step-chip.done { border-color: var(--emerald-border); }
+
+  .step-badge {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--surface-muted); color: var(--ink);
+    display: grid; place-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
+  }
+  .step-chip.active .step-badge { background: var(--accent); color: var(--ink-inverse); }
+  .step-chip.done .step-badge { background: var(--emerald); color: var(--ink-inverse); }
+
+  .step-labels { display: flex; flex-direction: column; line-height: 1.2; }
+  .step-tag { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.85; }
+  .step-title { font-size: 0.83rem; font-weight: 700; color: var(--ink); }
+
+  /* ================= SPATIAL WORKBENCH LAYOUT ================= */
+  .workbench {
+    flex: 1;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 18px 18px 104px;
+    display: grid;
+    grid-template-columns: minmax(380px, 46%) minmax(0, 54%);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .workbench.stage-expanded {
+    grid-template-columns: 1fr;
+  }
+
+  /* Left/Top 3D Stage Card */
+  .stage-column {
+    position: sticky;
+    top: 76px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .workbench.stage-expanded .stage-column {
+    position: relative;
+    top: 0;
+  }
+
+  .stage-card {
+    background: var(--surface-solid);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .stage-header {
+    padding: 10px 14px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; flex-wrap: wrap;
+    background: var(--surface-subtle);
+  }
+
+  .stage-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.76rem; font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink);
+  }
+
+  .live-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--emerald);
+    box-shadow: 0 0 0 3px var(--emerald-soft);
+    animation: pulseDot 2s infinite;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.22); opacity: 0.65; }
+  }
+
+  .stage-header-actions {
+    display: flex; gap: 6px; align-items: center;
+  }
+
+  .stage-header .t-btn {
+    min-height: 34px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  #btnCollapseStageMobile { display: none; }
+
+  .viewport-wrap {
+    position: relative;
+    width: 100%;
+    height: 410px;
+    background: var(--stage-bg);
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+    transition: height 0.22s ease;
+  }
+  .viewport-wrap:active { cursor: grabbing; }
+  .viewport-wrap.hover-interactive { cursor: pointer; }
+
+  .workbench.stage-expanded .viewport-wrap {
+    height: 520px;
+  }
+
+  .stage-card.mobile-collapsed .viewport-wrap {
+    height: 0;
+    border-bottom: none;
+  }
+
+  #threeCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .viewport-hud-top {
+    position: absolute; top: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    pointer-events: none; gap: 8px; flex-wrap: wrap;
+  }
+
+  .hud-pill {
+    background: var(--hud-bg);
+    color: var(--hud-text);
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 0.71rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.16);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  .viewport-hud-bottom {
+    position: absolute; bottom: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 6px; pointer-events: none;
+  }
+
+  .cam-presets {
+    display: flex; gap: 5px; overflow-x: auto; max-width: 100%;
+    pointer-events: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .cam-presets::-webkit-scrollbar { display: none; }
+
+  .cam-btn {
+    min-height: 34px;
+    padding: 5px 10px;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: var(--hud-bg);
+    color: var(--hud-text);
+    font-size: 0.73rem; font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all 0.15s ease;
+  }
+  .cam-btn:hover, .cam-btn.active {
+    background: var(--accent); color: var(--ink-inverse); border-color: var(--accent);
+  }
+
+  /* Synchronized 2D Accessible Telemetry Bar under 3D Stage */
+  .telemetry-strip {
+    padding: 12px 14px;
+    background: var(--surface-solid);
+    border-top: 1.5px solid var(--border);
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .led-bank {
+    background: var(--surface-subtle);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+
+  .led-bank-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; font-weight: 800; color: var(--ink-muted);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .led-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+  }
+
+  .led-cell {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+
+  .led-bulb {
+    width: 17px; height: 17px; border-radius: 50%;
+    background: var(--surface-muted);
+    border: 1.5px solid var(--border-strong);
+    transition: background-color 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .led-bulb.on-ok {
+    background: #10B981; border-color: #047857;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.75);
+  }
+  .led-bulb.on-warn {
+    background: #F59E0B; border-color: #B45309;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.75);
+  }
+  .led-bulb.on-fault {
+    background: #EF4444; border-color: #B91C1C;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.75);
+  }
+  .led-bulb.on-short {
+    background: #A855F7; border-color: #7E22CE;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.75);
+  }
+
+  .led-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem; font-weight: 800; color: var(--ink-muted);
+  }
+
+  /* Live 8-Pin Trace Log inside Telemetry Strip */
+  .pin-trace-wrap {
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pin-trace-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .pin-trace-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+  }
+
+  .trace-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px 2px;
+    border-radius: 7px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    transition: all 0.14s ease;
+  }
+  .trace-cell.active-now {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    font-weight: 800;
+  }
+  .trace-cell.trace-seen {
+    color: var(--ink);
+  }
+  .trace-cell.trace-open {
+    border-color: var(--crimson-border);
+    background: var(--crimson-soft);
+    color: var(--crimson-ink);
+  }
+  .trace-cell.trace-warn {
+    border-color: var(--amber-border);
+    background: var(--amber-soft);
+    color: var(--amber-ink);
+  }
+  .trace-cell.trace-short {
+    border-color: var(--violet-border);
+    background: var(--violet-soft);
+    color: var(--violet-ink);
+  }
+
+  /* WebGL Fallback Notice */
+  .webgl-fallback {
+    display: none;
+    position: absolute; inset: 0;
+    padding: 20px;
+    background: var(--surface-subtle);
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: 10px;
+  }
+  .webgl-fallback.visible { display: flex; }
+
+  /* ================= RIGHT/BOTTOM LEARNING DECK ================= */
+  .deck-column { min-width: 0; }
+
+  .screen {
+    display: none;
+    animation: fadeUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen-head {
+    margin-bottom: 14px;
+  }
+
+  .screen-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .screen-step-meta {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+  }
+
+  h1.screen-title {
+    font-size: 1.52rem;
+    font-weight: 700;
+    line-height: 1.24;
+    color: var(--ink);
+  }
+
+  .screen-lead {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    margin-top: 8px;
+    max-width: 68ch;
+  }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 0.73rem; font-weight: 700;
+    border: 1.5px solid transparent;
+    white-space: nowrap;
+  }
+  .pill-cyan { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent-border); }
+  .pill-emerald { background: var(--emerald-soft); color: var(--emerald-ink); border-color: var(--emerald-border); }
+  .pill-amber { background: var(--amber-soft); color: var(--amber-ink); border-color: var(--amber-border); }
+  .pill-crimson { background: var(--crimson-soft); color: var(--crimson-ink); border-color: var(--crimson-border); }
+  .pill-violet { background: var(--violet-soft); color: var(--violet-ink); border-color: var(--violet-border); }
+
+  .panel {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+    margin-top: 14px;
+  }
+
+  .panel-highlight {
+    background: var(--accent-soft);
+    border-color: var(--accent-border);
+  }
+
+  .panel-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.04rem; font-weight: 700;
+    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    color: var(--ink);
+  }
+
+  .panel-title-left {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  /* Buttons */
+  .btn {
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 11px;
+    border: 1.5px solid transparent;
+    font-weight: 700; font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.16s ease;
+    text-decoration: none;
+  }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--ink-inverse); border-color: var(--accent); }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-emerald { background: var(--emerald); color: var(--ink-inverse); border-color: var(--emerald); }
+  .btn-emerald:hover:not(:disabled) { filter: brightness(0.93); }
+  .btn-secondary {
+    background: var(--surface-subtle); color: var(--ink); border-color: var(--border-strong);
+  }
+  .btn-secondary:hover:not(:disabled) { background: var(--surface-muted); }
+  .btn-danger-soft {
+    background: var(--crimson-soft); color: var(--crimson-ink); border-color: var(--crimson-border);
+  }
+  .btn-danger-soft:hover:not(:disabled) { background: var(--crimson); color: var(--ink-inverse); border-color: var(--crimson); }
+  .btn-sm { min-height: 38px; padding: 6px 12px; font-size: 0.81rem; border-radius: 9px; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-row {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+
+  /* Callouts */
+  .callout {
+    padding: 13px 15px; border-radius: 12px;
+    border: 1.5px solid transparent; font-size: 0.89rem;
+    margin-top: 12px;
+    line-height: 1.55;
+  }
+  .callout-cyan { background: var(--accent-soft); border-color: var(--accent-border); color: var(--ink); }
+  .callout-emerald { background: var(--emerald-soft); border-color: var(--emerald-border); color: var(--ink); }
+  .callout-amber { background: var(--amber-soft); border-color: var(--amber-border); color: var(--ink); }
+  .callout-crimson { background: var(--crimson-soft); border-color: var(--crimson-border); color: var(--ink); }
+
+  /* Choice Cards (Screen 1) */
+  .decision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .decision-btn {
+    padding: 13px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-solid);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: all 0.16s ease;
+  }
+  .decision-btn:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .decision-btn.active { border-color: var(--accent); background: var(--surface-solid); box-shadow: var(--ring); }
+  .decision-title { font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 7px; }
+  .decision-sub { font-size: 0.78rem; color: var(--ink-muted); }
+
+  /* Roadmap List (Screen 1) */
+  .roadmap-list {
+    list-style: none;
+    display: grid;
+    gap: 9px;
+  }
+  .roadmap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 10px 12px;
+    border-radius: 11px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+  .tp-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 7px;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid var(--accent-border);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Segmented Subtabs */
+  .seg-tabs {
+    display: flex; gap: 6px;
+    background: var(--surface-subtle);
+    border: 1.5px solid var(--border);
+    padding: 4px; border-radius: 13px;
+    margin-top: 12px;
+  }
+
+  .seg-btn {
+    flex: 1 1 0;
+    min-height: 42px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-weight: 700; font-size: 0.84rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.15s ease;
+  }
+  .seg-btn:hover { color: var(--ink); }
+  .seg-btn.active {
+    background: var(--accent); color: var(--ink-inverse);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .seg-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.12);
+  }
+  .seg-btn.active .seg-badge {
+    background: rgba(255, 255, 255, 0.22);
+    color: var(--ink-inverse);
+  }
+
+  /* Tool Cards Grid (Screen 2) */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .tool-card {
+    padding: 12px 13px; border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    cursor: pointer; text-align: left;
+    transition: all 0.15s ease;
+  }
+  .tool-card:hover { border-color: var(--accent); }
+  .tool-card.active {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: var(--shadow-sm);
+  }
+  .tool-card-name { font-weight: 800; font-size: 0.89rem; margin-bottom: 2px; color: var(--ink); }
+  .tool-card-sub { font-size: 0.77rem; color: var(--ink-muted); }
+
+  /* Hotspot Chips (Screen 2) */
+  .hotspot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .hs-btn {
+    min-height: 46px;
+    padding: 9px 12px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    font-weight: 700; font-size: 0.83rem;
+    cursor: pointer; text-align: left;
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .hs-btn:hover { border-color: var(--accent); }
+  .hs-btn.visited { border-color: var(--emerald-border); }
+  .hs-btn.active { background: var(--accent); color: var(--ink-inverse); border-color: var(--accent); }
+
+  /* Screen 3: Wire Builder */
+  .wiring-hint-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    font-size: 0.81rem;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .wiring-hint-bar.selecting {
+    background: var(--accent-soft);
+    border-color: var(--accent-border);
+    color: var(--accent-ink);
+    font-weight: 700;
+  }
+
+  .wire-palette {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .wire-chip {
+    min-height: 46px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--surface-solid);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 0.77rem; font-weight: 700;
+    text-align: left;
+    transition: all 0.14s ease;
+  }
+  .wire-chip:hover { border-color: var(--accent); }
+  .wire-chip.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+    box-shadow: var(--ring);
+  }
+
+  .wire-swatch {
+    width: 16px; height: 28px; border-radius: 5px;
+    border: 1.5px solid rgba(15,23,42,0.28);
+    flex-shrink: 0;
+  }
+
+  .pin-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .pin-slot {
+    min-height: 94px;
+    padding: 7px 4px;
+    border-radius: 11px;
+    border: 2px solid var(--border);
+    background: var(--surface-subtle);
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    transition: all 0.14s ease;
+  }
+  .pin-slot:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .pin-slot.swap-selected { border-color: var(--amber); background: var(--amber-soft); box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25); }
+  .pin-slot.slot-ok { border-color: var(--emerald); background: var(--emerald-soft); }
+  .pin-slot.slot-err { border-color: var(--crimson); background: var(--crimson-soft); }
+
+  .pin-bar {
+    width: 18px; height: 42px; border-radius: 5px;
+    border: 1.5px solid rgba(15,23,42,0.28);
+  }
+
+  .pin-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; font-weight: 800;
+  }
+
+  /* Swatch stripe styles (Colorblind + visual clarity) */
+  .sw-PO { background: repeating-linear-gradient(135deg, #FFFFFF 0 5px, #F97316 5px 10px); }
+  .sw-O  { background: #F97316; }
+  .sw-PH { background: repeating-linear-gradient(135deg, #FFFFFF 0 5px, #16A34A 5px 10px); }
+  .sw-B  { background: #2563EB; }
+  .sw-PB { background: repeating-linear-gradient(135deg, #FFFFFF 0 5px, #2563EB 5px 10px); }
+  .sw-H  { background: #16A34A; }
+  .sw-PC { background: repeating-linear-gradient(135deg, #FFFFFF 0 5px, #92400E 5px 10px); }
+  .sw-C  { background: #92400E; }
+
+  /* Screen 4: Switch Control & Diagnosis */
+  .switch-rack {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .sw-btn {
+    min-height: 52px;
+    padding: 8px 6px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800; font-size: 0.8rem;
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    transition: all 0.14s ease;
+  }
+  .sw-btn:hover { border-color: var(--accent); }
+  .sw-btn small { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.69rem; font-weight: 600; opacity: 0.85; }
+  .sw-btn.active {
+    background: var(--emerald); color: var(--ink-inverse); border-color: var(--emerald);
+  }
+  .sw-btn.active-off {
+    background: var(--crimson); color: var(--ink-inverse); border-color: var(--crimson);
+  }
+
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .scenario-btn {
+    min-height: 44px;
+    padding: 9px 12px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    color: var(--ink);
+    font-size: 0.81rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.14s ease;
+  }
+  .scenario-btn:hover { border-color: var(--accent); }
+  .scenario-btn.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .scenario-btn.fault { border-color: var(--crimson-border); }
+  .scenario-btn.fault.active {
+    background: var(--crimson-soft);
+    border-color: var(--crimson);
+    color: var(--crimson-ink);
+  }
+
+  /* Detective Case Selector Pills */
+  .case-nav-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .case-pill-btn {
+    min-height: 38px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    font-size: 0.77rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.14s ease;
+  }
+  .case-pill-btn.active {
+    background: var(--violet-soft);
+    border-color: var(--violet);
+    color: var(--violet-ink);
+  }
+  .case-pill-btn.solved {
+    border-color: var(--emerald);
+    color: var(--emerald-ink);
+  }
+
+  /* Form controls */
+  .field-group { margin-bottom: 13px; }
+  .field-group label { display: block; font-size: 0.84rem; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+  .input-ctrl {
+    width: 100%; min-height: 46px;
+    padding: 10px 12px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--surface-solid);
+    color: var(--ink);
+    transition: border-color 0.14s ease;
+  }
+  .input-ctrl:hover { border-color: var(--accent); }
+  .input-ctrl::placeholder { color: var(--ink-muted); opacity: 0.85; }
+
+  /* SOP Checklist (Screen 5) */
+  .sop-item {
+    width: 100%;
+    min-height: 58px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+  .sop-item:hover { border-color: var(--accent); }
+  .sop-item.next-step {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .sop-item.done {
+    border-color: var(--emerald);
+    background: var(--emerald-soft);
+  }
+  .sop-item.locked {
+    opacity: 0.72;
+  }
+
+  .sop-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--surface-solid);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .sop-item.next-step .sop-badge {
+    background: var(--accent);
+    color: var(--ink-inverse);
+    border-color: var(--accent);
+  }
+  .sop-item.done .sop-badge {
+    background: var(--emerald);
+    color: var(--ink-inverse);
+    border-color: var(--emerald);
+  }
+
+  /* Quiz Progress & Options */
+  .quiz-dots {
+    display: flex; gap: 6px; margin-bottom: 14px;
+  }
+  .quiz-dot {
+    flex: 1; height: 6px; border-radius: 999px;
+    background: var(--surface-muted);
+    transition: background-color 0.2s ease;
+  }
+  .quiz-dot.current { background: var(--accent); }
+  .quiz-dot.right { background: var(--emerald); }
+  .quiz-dot.wrong { background: var(--crimson); }
+
+  .q-opt {
+    width: 100%; min-height: 50px;
+    padding: 11px 14px; margin-bottom: 8px;
+    border-radius: 12px; border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    text-align: left; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    display: flex; align-items: center; gap: 11px;
+    transition: all 0.14s ease;
+  }
+  .q-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+  .q-opt.correct { border-color: var(--emerald); background: var(--emerald-soft); }
+  .q-opt.wrong { border-color: var(--crimson); background: var(--crimson-soft); }
+
+  .q-letter {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--surface-muted);
+    display: grid; place-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800; font-size: 0.82rem; flex-shrink: 0;
+  }
+  .q-opt.correct .q-letter { background: var(--emerald); color: var(--ink-inverse); }
+  .q-opt.wrong .q-letter { background: var(--crimson); color: var(--ink-inverse); }
+
+  /* Quick Reflection Chips */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 7px; }
+  .mini-chip {
+    min-height: 34px; padding: 5px 11px; border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    font-size: 0.77rem; font-weight: 700; cursor: pointer;
+    transition: all 0.14s ease;
+  }
+  .mini-chip:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+
+  /* Summary Row (Screen 6) */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 11px 13px;
+    border-radius: 12px;
+    background: var(--surface-subtle);
+    border: 1.5px solid var(--border);
+  }
+  .summary-row.ok { border-color: var(--emerald-border); }
+
+  /* SVG Diagram Container */
+  .diagram-box {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .diagram-box.dark-diagram {
+    background: #0F172A;
+  }
+  .diagram-box img { width: 100%; height: auto; display: block; border-radius: 8px; }
+
+  /* ================= STICKY BOTTOM NAV ================= */
+  .bottom-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 110;
+    background: var(--surface);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1.5px solid var(--border);
+    padding: 10px 18px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding-left: 62px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+
+  .prog-wrap { text-align: center; flex: 1; max-width: 340px; }
+  .prog-text { font-size: 0.79rem; font-weight: 700; color: var(--ink-muted); }
+  .prog-track {
+    height: 7px; border-radius: 999px;
+    background: var(--surface-muted); overflow: hidden; margin-top: 5px;
+  }
+  .prog-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.25s ease; }
+
+  /* ================= FLOATING BOTTOM-LEFT ACCESSIBILITY WIDGET ================= */
+  .a11y-fab {
+    position: fixed;
+    left: 16px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    z-index: 160;
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    border: 2px solid var(--surface-solid);
+    background: var(--accent);
+    color: var(--ink-inverse);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .a11y-fab:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px) scale(1.04);
+  }
+  .a11y-fab[aria-expanded="true"] {
+    transform: scale(0.96);
+    box-shadow: var(--ring), var(--shadow-md);
+  }
+
+  .a11y-fab-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--emerald);
+    border: 2px solid var(--surface-solid);
+    display: none;
+  }
+  .a11y-fab.has-custom .a11y-fab-dot { display: block; }
+
+  .a11y-popover {
+    position: fixed;
+    left: 16px;
+    bottom: calc(70px + env(safe-area-inset-bottom));
+    z-index: 165;
+    width: min(336px, calc(100vw - 32px));
+    max-height: calc(100vh - 170px);
+    overflow-y: auto;
+    background: var(--surface-solid);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    padding: 16px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+    transform-origin: bottom left;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.18s ease;
+  }
+
+  .a11y-popover.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .a11y-pop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .a11y-pop-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.96rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .a11y-close-btn {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .a11y-close-btn:hover { background: var(--surface-muted); }
+
+  .a11y-group {
+    margin-bottom: 13px;
+  }
+  .a11y-group:last-of-type { margin-bottom: 0; }
+  .a11y-group-label {
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-bottom: 7px;
+    display: block;
+  }
+
+  .a11y-seg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    background: var(--surface-subtle);
+    border: 1.5px solid var(--border);
+    padding: 4px;
+    border-radius: 12px;
+  }
+  .a11y-seg-btn {
+    min-height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    transition: all 0.14s ease;
+  }
+  .a11y-seg-btn:hover { background: var(--surface-muted); }
+  .a11y-seg-btn.active {
+    background: var(--accent);
+    color: var(--ink-inverse);
+  }
+
+  .a11y-font-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-subtle);
+    border: 1.5px solid var(--border);
+    padding: 4px;
+    border-radius: 12px;
+  }
+  .a11y-font-val {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  .a11y-toggle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .a11y-toggle-row {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 11px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-subtle);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    text-align: left;
+    transition: all 0.14s ease;
+  }
+  .a11y-toggle-row:hover { border-color: var(--accent); }
+  .a11y-toggle-row.active {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+  .a11y-toggle-left {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .switch-pill {
+    width: 38px; height: 22px;
+    border-radius: 999px;
+    background: var(--border-strong);
+    position: relative;
+    flex-shrink: 0;
+    transition: background-color 0.16s ease;
+  }
+  .switch-pill::after {
+    content: "";
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    transition: transform 0.16s ease;
+  }
+  .a11y-toggle-row.active .switch-pill {
+    background: var(--accent);
+  }
+  .a11y-toggle-row.active .switch-pill::after {
+    transform: translateX(16px);
+  }
+  [data-theme="contrast"] .a11y-toggle-row.active .switch-pill::after {
+    background: #000000;
+  }
+
+  .a11y-pop-foot {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    right: 16px;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    z-index: 170;
+    background: var(--ink);
+    color: var(--ink-inverse);
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-width: min(340px, calc(100vw - 88px));
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ================= RESPONSIVE BREAKPOINTS ================= */
+  @media (max-width: 1024px) {
+    .workbench {
+      grid-template-columns: 1fr;
+      padding: 14px 14px 98px;
+      gap: 14px;
+    }
+    .stage-column { position: relative; top: 0; }
+    .viewport-wrap { height: 330px; }
+    #btnExpandStage { display: none; }
+    #btnCollapseStageMobile { display: inline-flex; }
+  }
+
+  @media (max-width: 640px) {
+    .topbar { padding: 8px 12px; }
+    .brand-title { font-size: 0.92rem; }
+    .brand-sub { display: none; }
+    .mission-pill-btn .mission-label-long { display: none; }
+    .stepper-strip { padding: 7px 12px; }
+    .step-chip { min-width: 128px; padding: 6px 10px; }
+    .workbench { padding: 12px 12px 96px; }
+    .viewport-wrap { height: 270px; }
+    .telemetry-grid { grid-template-columns: 1fr; gap: 8px; }
+    .decision-grid, .tool-grid, .hotspot-grid, .scenario-grid { grid-template-columns: 1fr; }
+    .wire-palette { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pin-slots-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .switch-rack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .case-nav-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h1.screen-title { font-size: 1.3rem; }
+    .panel { padding: 14px; }
+    .prog-wrap { display: none; }
+    .bottom-bar { padding: 9px 12px calc(9px + env(safe-area-inset-bottom)); }
+    .bottom-inner { padding-left: 54px; gap: 8px; }
+    .bottom-inner .btn { flex: 1; font-size: 0.82rem; padding: 8px 10px; min-height: 44px; }
+    #hudHintText { display: none; }
+    .a11y-fab {
+      width: 44px; height: 44px;
+      left: 12px;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+    }
+    .a11y-popover {
+      left: 12px;
+      bottom: calc(68px + env(safe-area-inset-bottom));
+      width: calc(100vw - 24px);
+    }
+  }
+
+  @media print {
+    .topbar, .stepper-strip, .stage-column, .bottom-bar, .a11y-fab, .a11y-popover, .toast, .no-print {
+      display: none !important;
+    }
+    .workbench { display: block; padding: 0; }
+    .screen { display: block !important; page-break-after: always; }
+    body { background: #FFFFFF; color: #000000; }
+    .panel { box-shadow: none; border: 1px solid #94A3B8; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#mainDeck" class="skip-link">Langsung ke Materi Pembelajaran</a>
+
+<!-- ==================== CLEAN TOP BAR ==================== -->
+<header class="topbar" role="banner">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg class="ico ico-lg" viewBox="0 0 24 24">
+          <rect x="4" y="3" width="16" height="14" rx="2.5"></rect>
+          <path d="M8 7v3M10.7 7v3M13.3 7v3M16 7v3"></path>
+          <path d="M9 17v4h6v-4"></path>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-title">Lab 3D LAN Tester &amp; Kabel UTP</div>
+        <div class="brand-sub">Dasar-Dasar TJKT Fase E • Simulator Alat Ukur</div>
+      </div>
+    </div>
+
+    <div class="top-actions" role="toolbar" aria-label="Status Progres dan Layar Penuh">
+      <button type="button" class="mission-pill-btn" id="btnTopProgress" onclick="goToScreen(6)" title="Lihat Rekap Capaian Praktik">
+        <span class="mission-dot" aria-hidden="true"></span>
+        <span class="mono" id="topProgressCount">0/5</span>
+        <span class="mission-label-long">Misi Tuntas</span>
+      </button>
+
+      <button type="button" class="t-btn" id="btnFullscreen" aria-pressed="false" title="Layar Penuh (Shortcut: F)">
+        <svg class="ico ico-sm" id="fsIconSvg" viewBox="0 0 24 24">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <span id="fsLabel">Layar Penuh</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== STEPPER 6 ALUR PRAKTIK ==================== -->
+<nav class="stepper-strip" aria-label="Navigasi Alur Pembelajaran">
+  <div class="stepper-track" id="stepperTrack"></div>
+</nav>
+
+<!-- ==================== SPATIAL WORKBENCH ==================== -->
+<div class="workbench" id="workbench">
+
+  <!-- LEFT / TOP: PERSISTENT THREE.JS 3D HARDWARE STAGE -->
+  <aside class="stage-column" aria-label="Panggung Simulasi 3D Interaktif">
+    <div class="stage-card" id="stageCard">
+      <div class="stage-header">
+        <div class="stage-status">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span id="stageModeLabel">3D WORKBENCH • LAN TESTER</span>
+        </div>
+        <div class="stage-header-actions">
+          <button type="button" class="t-btn" id="btnToggle3DObject" onclick="toggleStageAssembly()" title="Beralih antara model 3D LAN Tester dan Konektor RJ-45">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            <span id="toggle3DLabel">Lihat RJ-45</span>
+          </button>
+          <button type="button" class="t-btn" id="btnExpandStage" onclick="toggleExpandStage()" title="Perbesar / perkecil area 3D">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
+            <span id="expandStageLabel">Perbesar</span>
+          </button>
+          <button type="button" class="t-btn" id="btnCollapseStageMobile" onclick="toggleMobileStage()" aria-expanded="true" title="Sembunyikan atau tampilkan area 3D">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"></path></svg>
+            <span id="collapseMobileLabel">Lipat 3D</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="viewport-wrap" id="viewportWrap">
+        <canvas id="threeCanvas" aria-label="Simulasi 3D interaktif LAN Tester dan konektor kabel UTP RJ-45"></canvas>
+
+        <div class="viewport-hud-top">
+          <span class="hud-pill" id="hudStatusText">SW: OFF • SIAP UJI</span>
+          <span class="hud-pill" id="hudHintText">Geser: Putar • Zoom</span>
+        </div>
+
+        <div class="viewport-hud-bottom">
+          <div class="cam-presets" id="camPresets" role="group" aria-label="Sudut Kamera 3D">
+            <button type="button" class="cam-btn active" data-preset="bench" onclick="setCameraPreset('bench')">Meja Lab</button>
+            <button type="button" class="cam-btn" data-preset="master" onclick="setCameraPreset('master')">Master</button>
+            <button type="button" class="cam-btn" data-preset="remote" onclick="setCameraPreset('remote')">Remote</button>
+            <button type="button" class="cam-btn" data-preset="rj45" onclick="setCameraPreset('rj45')">Macro RJ-45</button>
+            <button type="button" class="cam-btn" data-preset="flip" onclick="flipRJ45Clip()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"></path><path d="M21 3v5h-5"></path></svg>
+              Putar Klip
+            </button>
+          </div>
+        </div>
+
+        <!-- Graceful Offline / Non-WebGL Fallback -->
+        <div class="webgl-fallback" id="webglFallback">
+          <strong style="font-size:1.02rem;">Mode Visual 2D Aktif (WebGL Tidak Tersedia)</strong>
+          <p style="font-size:0.86rem; color:var(--ink-muted); max-width:38ch;">
+            Browser sedang offline atau tidak mendukung WebGL. Seluruh simulasi rakit kabel, telemetri LED di bawah, tantangan detektif, dan asesmen tetap berjalan penuh.
+          </p>
+        </div>
+      </div>
+
+      <!-- Synchronized Accessible 2D LED Telemetry + 8-Pin Trace -->
+      <div class="telemetry-strip" aria-live="polite">
+        <div class="telemetry-grid">
+          <div class="led-bank">
+            <div class="led-bank-title">
+              <span>MASTER (TX)</span>
+              <span id="teleMasterPin" class="mono">PIN: —</span>
+            </div>
+            <div class="led-row" id="teleMasterRow"></div>
+          </div>
+          <div class="led-bank">
+            <div class="led-bank-title">
+              <span>REMOTE (RX)</span>
+              <span id="teleRemotePin" class="mono">PIN: —</span>
+            </div>
+            <div class="led-row" id="teleRemoteRow"></div>
+          </div>
+        </div>
+
+        <div class="pin-trace-wrap">
+          <span class="pin-trace-label">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>
+            Rekam Jejak Pin (Master &rarr; Remote):
+          </span>
+          <div class="pin-trace-grid" id="pinTraceGrid" aria-label="Catatan hasil pemindaian pin 1 sampai 8"></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT / BOTTOM: INTERACTIVE LEARNING DECK -->
+  <main class="deck-column" id="mainDeck" tabindex="-1">
+
+    <!-- ==================== LAYAR 1: ORIENTASI & MISI ==================== -->
+    <section class="screen active" id="screen-1" data-title="Orientasi Masalah dan Misi Praktik Alat Ukur TJKT">
+      <div class="screen-head">
+        <h1 class="screen-title">Kabel Baru Jadi, tapi PC Tetap "No Internet" — Bagaimana Membuktikannya?</h1>
+        <p class="screen-lead">Teknisi jaringan tidak menebak sumber kerusakan. Dengan alat ukur dan SOP yang tepat, kamu bisa menemukan pin yang putus atau tertukar hanya dalam hitungan detik.</p>
+      </div>
+
+      <div class="panel panel-highlight">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Studi Kasus Pembuka
+          </span>
+          <span class="pill pill-amber">Simulasi Interaktif</span>
+        </div>
+        <p style="font-size:0.93rem; font-weight:500;">
+          Kamu baru saja memasang konektor RJ-45 pada kabel UTP 15 meter untuk lab komputer. Saat dicolok ke Switch dan PC, lampu link mati total. Langkah mana yang kamu pilih?
+        </p>
+
+        <div class="decision-grid">
+          <button type="button" class="decision-btn" id="pemantikBtn1" onclick="showPemantik(1)">
+            <span class="decision-title">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+              Potong &amp; Crimping Ulang Langsung
+            </span>
+            <span class="decision-sub">Tebak sendiri ujung mana yang bermasalah tanpa dicek dulu.</span>
+          </button>
+          <button type="button" class="decision-btn" id="pemantikBtn2" onclick="showPemantik(2)">
+            <span class="decision-title">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Uji dengan LAN Tester (SOP)
+            </span>
+            <span class="decision-sub">Lihat demo pemindaian LED langsung pada model 3D!</span>
+          </button>
+        </div>
+
+        <div id="pemantikOut" class="callout" style="display:none;" role="status"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            Peta Misi Praktik (TP 4.1 – 4.4)
+          </span>
+        </div>
+        <ul class="roadmap-list">
+          <li class="roadmap-item">
+            <span class="tp-code">TP 4.1</span>
+            <span><strong>Kenali Fungsi Alat Ukur:</strong> Membedakan fungsi LAN Tester, OPM/OTDR, Multimeter, Earth Tester, dan Wi-Fi Analyzer serta anatomi LAN Tester 3D.</span>
+          </li>
+          <li class="roadmap-item">
+            <span class="tp-code">TP 4.3</span>
+            <span><strong>Rakit &amp; Operasikan:</strong> Menyusun urutan warna kabel UTP (T568B/T568A) di konektor RJ-45 3D, lalu mengujinya langsung di LAN Tester.</span>
+          </li>
+          <li class="roadmap-item">
+            <span class="tp-code">TP 4.2</span>
+            <span><strong>Analisis Gangguan:</strong> Membaca pola LED Master–Remote untuk mendiagnosis kabel <em>Normal, Open, Miswired</em>, maupun <em>Short</em>.</span>
+          </li>
+          <li class="roadmap-item">
+            <span class="tp-code">TP 4.4</span>
+            <span><strong>Rawat Sesuai SOP:</strong> Menjalankan urutan pemeliharaan 3D agar alat ukur awet, aman, dan akurat.</span>
+          </li>
+        </ul>
+
+        <button type="button" class="btn btn-primary" style="width:100%; margin-top:16px;" onclick="goToScreen(2)">
+          Mulai Eksplorasi Alat Ukur &amp; Anatomi 3D
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== LAYAR 2: EKSPLORASI ALAT & ANATOMI 3D ==================== -->
+    <section class="screen" id="screen-2" data-title="Eksplorasi Ekosistem Alat Ukur dan Anatomi 3D LAN Tester">
+      <div class="screen-head">
+        <h1 class="screen-title">Bedah Anatomi 3D LAN Tester &amp; Peta Alat Ukur Industri</h1>
+        <p class="screen-lead">Klik langsung komponen pada model 3D atau daftar di bawah untuk memfokuskan kamera, lalu kenali 6 alat ukur wajib di industri TJKT.</p>
+      </div>
+
+      <div class="seg-tabs" role="tablist">
+        <button type="button" class="seg-btn active" role="tab" aria-selected="true" onclick="switchS2Tab('inspect', this)">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+          Anatomi 3D LAN Tester
+        </button>
+        <button type="button" class="seg-btn" role="tab" aria-selected="false" onclick="switchS2Tab('ecosystem', this)">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          6 Alat Ukur Industri
+        </button>
+      </div>
+
+      <!-- Tab 1: 3D Component Inspector -->
+      <div id="s2-inspect" class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            Pilih Bagian untuk Fokus Kamera 3D
+          </span>
+          <span class="pill pill-emerald" id="inspectProg">Anatomi 3D: 1 / 6</span>
+        </div>
+        <div class="hotspot-grid">
+          <button type="button" class="hs-btn active" data-hs="master" onclick="inspectPart('master')"><span>1. Unit Master (TX)</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="hs-btn" data-hs="remote" onclick="inspectPart('remote')"><span>2. Unit Remote (RX)</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="hs-btn" data-hs="switch" onclick="inspectPart('switch')"><span>3. Saklar OFF / ON / S</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="hs-btn" data-hs="leds" onclick="inspectPart('leds')"><span>4. Deret LED 1–8 &amp; G</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="hs-btn" data-hs="port" onclick="inspectPart('port')"><span>5. Port RJ-45</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="hs-btn" data-hs="rj45" onclick="inspectPart('rj45')"><span>6. Konektor &amp; Klip RJ-45</span> <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg></button>
+        </div>
+
+        <div id="inspectCard" class="callout callout-cyan" style="margin-top:14px;" aria-live="polite"></div>
+
+        <div class="btn-row" style="margin-top:14px; justify-content:space-between;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="switchS2Tab('ecosystem', document.querySelectorAll('#screen-2 .seg-btn')[1])">
+            Lihat 6 Alat Ukur Industri
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="goToScreen(3)">
+            Lanjut: Rakit RJ-45 3D
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 2: 6 Industry Tools -->
+      <div id="s2-ecosystem" class="panel" style="display:none;">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            Katalog Alat Ukur Standar Industri
+          </span>
+        </div>
+        <div class="tool-grid" id="toolCatalogGrid"></div>
+        <div id="toolDetailBox" class="callout callout-emerald" aria-live="polite">
+          Pilih salah satu alat ukur di atas untuk membaca fungsi spesifik dan penerapannya di lapangan.
+        </div>
+        <div class="diagram-box">
+          <img src="assets/alat-ukur-matrix.svg" alt="Peta Ekosistem Alat Ukur Standar Industri TJKT: LAN Tester, OPM dan OTDR, Multimeter, Earth Tester, dan Wi-Fi Analyzer">
+        </div>
+        <div class="btn-row" style="margin-top:14px; justify-content:flex-end;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="goToScreen(3)">
+            Siap Praktik: Rakit Kabel RJ-45 3D
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== LAYAR 3: RAKIT & CRIMPING RJ-45 3D ==================== -->
+    <section class="screen" id="screen-3" data-title="Merakit Urutan Kabel UTP pada Konektor RJ-45 3D">
+      <div class="screen-head">
+        <h1 class="screen-title">Rakit Urutan 8 Kawat UTP pada Konektor RJ-45 3D</h1>
+        <p class="screen-lead">Perbaiki urutan warna pada <strong>Ujung A</strong> dan cek <strong>Ujung B</strong>. Setiap perubahan langsung tampil nyata pada konektor RJ-45 3D transparan, lalu langsung siap diuji di LAN Tester.</p>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px;">
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary btn-sm" id="btnModeStraight" onclick="setCableTarget('straight')">Straight (T568B–B)</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnModeCross" onclick="setCableTarget('cross')">Crossover (T568A–B)</button>
+            <span class="pill pill-amber" id="crimpStatusPill">Belum Di-crimping</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnWiringGuide" aria-expanded="false" onclick="toggleWiringGuide()">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            Panduan T568B/A
+          </button>
+        </div>
+
+        <div id="wiringGuideBox" class="diagram-box" style="display:none; margin-bottom:12px;">
+          <img src="assets/t568-wiring-guide.svg" alt="Panduan urutan warna kabel UTP standar T568B dan T568A dengan klip RJ-45 di bawah">
+        </div>
+
+        <!-- Select End A or End B with live status badges -->
+        <div class="seg-tabs" style="margin-top:0; margin-bottom:12px;">
+          <button type="button" class="seg-btn active" id="btnEndA" onclick="selectCableEnd('A')">
+            Ujung A (Master) <span class="seg-badge" id="endABadge">Cek</span>
+          </button>
+          <button type="button" class="seg-btn" id="btnEndB" onclick="selectCableEnd('B')">
+            Ujung B (Remote) <span class="seg-badge" id="endBBadge">Cek</span>
+          </button>
+        </div>
+
+        <div class="wiring-hint-bar" id="wiringHintBar">
+          <span><strong>Tugas:</strong> Ujung A memiliki 2 kawat tertukar. Ketuk 1 warna lalu ketuk slot Pin 1–8, atau ketuk 2 slot pin untuk menukarnya.</span>
+        </div>
+
+        <!-- 8 Color Palette -->
+        <div class="wire-palette" id="wirePalette"></div>
+
+        <!-- 8 Pin Slots -->
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px;">
+          <span style="font-size:0.82rem; font-weight:800;">Urutan Pin (<span id="activeEndLabel">Ujung A — Target T568B</span>):</span>
+          <button type="button" class="t-btn" style="min-height:34px; font-size:0.75rem;" onclick="flipRJ45Clip()">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"></path><path d="M21 3v5h-5"></path></svg>
+            Putar Klip 3D
+          </button>
+        </div>
+        <div class="pin-slots-grid" id="pinSlotsGrid"></div>
+
+        <div class="btn-row" style="margin-top:14px;">
+          <button type="button" class="btn btn-emerald" onclick="crimpAndValidate()">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Crimping &amp; Validasi
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="autoFillEnd()">Isi Sesuai Standar</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="shuffleEnd()">Acak Urutan</button>
+        </div>
+
+        <div id="crimpFeedback" class="callout" style="display:none;" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ==================== LAYAR 4: LAB MAYA LAN TESTER 3D ==================== -->
+    <section class="screen" id="screen-4" data-title="Lab Maya LAN Tester 3D dan Tantangan Detektif Gangguan">
+      <div class="screen-head">
+        <h1 class="screen-title">Lab Maya LAN Tester 3D &amp; Detektif Gangguan Kabel</h1>
+        <p class="screen-lead">Nyalakan saklar <strong>ON</strong>, <strong>S (Slow)</strong>, atau klik langsung saklar pada model 3D. Amati nyala LED dan jejak pin Master–Remote untuk mendiagnosis kabel.</p>
+      </div>
+
+      <!-- Physical Switch Rack -->
+      <div class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><rect x="1" y="5" width="22" height="14" rx="7"></rect><circle cx="16" cy="12" r="3"></circle></svg>
+            Saklar Fisik LAN Tester 3D
+          </span>
+          <span class="pill pill-cyan" id="activeCableBadge">Kabel Aktif: Straight Normal</span>
+        </div>
+
+        <div class="switch-rack">
+          <button type="button" class="sw-btn active-off" id="sw-off" onclick="setTesterSwitch('OFF')">
+            <span>OFF</span><small>Alat Mati</small>
+          </button>
+          <button type="button" class="sw-btn" id="sw-on" onclick="setTesterSwitch('ON')">
+            <span>ON</span><small>Scan Cepat</small>
+          </button>
+          <button type="button" class="sw-btn" id="sw-slow" onclick="setTesterSwitch('SLOW')">
+            <span>S (SLOW)</span><small>Scan Pelan</small>
+          </button>
+          <button type="button" class="sw-btn" id="sw-step" onclick="stepTesterPin()">
+            <span>STEP +1</span><small>Uji Per Pin</small>
+          </button>
+        </div>
+
+        <div class="seg-tabs" role="tablist">
+          <button type="button" class="seg-btn active" id="tabLabExplore" role="tab" aria-selected="true" onclick="switchLabMode('explore', this)">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            Eksplorasi Kabel
+          </button>
+          <button type="button" class="seg-btn" id="tabLabDetective" role="tab" aria-selected="false" onclick="switchLabMode('detective', this)">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+            Tantangan Detektif <span class="seg-badge" id="detTabBadge">0/4</span>
+          </button>
+        </div>
+
+        <!-- Mode Explore -->
+        <div id="lab-explore" style="margin-top:14px;">
+          <p style="font-size:0.85rem; color:var(--ink-muted); margin-bottom:10px;">
+            Pilih kabel yang dipasang pada port Master &amp; Remote LAN Tester 3D:
+          </p>
+          <div class="scenario-grid" id="scenarioGrid">
+            <button type="button" class="scenario-btn" data-sc="custom" onclick="loadSimScenario('custom')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a6 6 0 0 1-12 0V8z"></path></svg>
+              Kabel Rakitanmu (Layar 3)
+            </button>
+            <button type="button" class="scenario-btn active" data-sc="straight" onclick="loadSimScenario('straight')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Straight Normal (1–8)
+            </button>
+            <button type="button" class="scenario-btn" data-sc="cross" onclick="loadSimScenario('cross')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
+              Crossover Normal (1↔3, 2↔6)
+            </button>
+            <button type="button" class="scenario-btn fault" data-sc="open3" onclick="loadSimScenario('open3')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              Putus / Open (Pin 3)
+            </button>
+            <button type="button" class="scenario-btn fault" data-sc="miswire45" onclick="loadSimScenario('miswire45')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Tertukar / Miswired (4↔5)
+            </button>
+            <button type="button" class="scenario-btn fault" data-sc="short67" onclick="loadSimScenario('short67')">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Korslet / Short (Pin 6+7)
+            </button>
+          </div>
+
+          <div id="exploreDiagBox" class="callout callout-cyan" role="status" aria-live="polite">
+            Pilih mode <strong>S (SLOW)</strong> atau <strong>STEP +1</strong> untuk mengamati urutan nyala LED 1–8 dengan teliti.
+          </div>
+
+          <div class="diagram-box dark-diagram">
+            <img src="assets/led-diagnostic-chart.svg" alt="Panduan cepat membaca pola LED LAN Tester untuk kondisi Normal, Open, Miswired, dan Short">
+          </div>
+
+          <div class="btn-row" style="margin-top:14px; justify-content:flex-end;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchLabMode('detective', document.getElementById('tabLabDetective'))">
+              Uji Kemampuan: Masuk Tantangan Detektif
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Detective (Realistic Hardware Readout — No Answer Leaks!) -->
+        <div id="lab-detective" style="display:none; margin-top:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+            <strong style="font-size:0.93rem;" id="detCaseTitle">Kasus 1 / 4 — Kabel Lab Ruang Guru</strong>
+            <span class="pill pill-emerald" id="detScorePill">Skor Detektif: 0 / 4</span>
+          </div>
+
+          <div class="case-nav-row" id="detCaseNav"></div>
+
+          <p style="font-size:0.86rem; color:var(--ink-muted); margin-bottom:12px;">
+            Mode Detektif meniru <strong>LAN Tester asli</strong> (LED tidak memberi bocoran warna error). Amati pasangan angka <strong>Master &rarr; Remote</strong> pada LED atau baris Rekam Jejak Pin di bawah panggung 3D, lalu tentukan diagnosisnya.
+          </p>
+
+          <div class="field-group">
+            <label for="detCondition">1. Kondisi konektivitas kabel ini adalah:</label>
+            <select id="detCondition" class="input-ctrl">
+              <option value="">-- Pilih Hasil Analisis --</option>
+              <option value="straight">Normal — Straight-Through (1–8 berurutan identik)</option>
+              <option value="cross">Normal — Crossover (1↔3, 2↔6)</option>
+              <option value="open">Open / Putus (Ada pin yang mati di Remote)</option>
+              <option value="miswired">Miswired / Tertukar (Urutan LED Remote melompat)</option>
+              <option value="short">Short / Korslet (2 LED Remote menyala bersamaan)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="detAction">2. Rekomendasi tindak lanjut sesuai SOP:</label>
+            <select id="detAction" class="input-ctrl">
+              <option value="">-- Pilih Rekomendasi SOP --</option>
+              <option value="pass">Layak Pakai — Pasang ke perangkat jaringan &amp; dokumentasikan</option>
+              <option value="recrimp">Tidak Layak — Potong konektor, rapikan urutan &amp; crimping ulang</option>
+            </select>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" onclick="submitDetective()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verifikasi Diagnosis
+            </button>
+            <button type="button" class="btn btn-secondary" id="btnNextDetCase" onclick="nextDetectiveCase()" style="display:none;">
+              Kasus Berikutnya
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+
+          <div id="detFeedback" class="callout" style="display:none;" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== LAYAR 5: SOP PEMELIHARAAN 3D & ASESMEN ==================== -->
+    <section class="screen" id="screen-5" data-title="SOP Pemeliharaan Alat Ukur 3D dan Asesmen Sumatif">
+      <div class="screen-head">
+        <h1 class="screen-title">SOP Pemeliharaan Alat Ukur 3D &amp; Uji Kompetensi</h1>
+        <p class="screen-lead">Jalankan 4 langkah perawatan alat ukur secara berurutan pada model 3D, kemudian tuntaskan 5 soal studi kasus.</p>
+      </div>
+
+      <div class="seg-tabs" role="tablist">
+        <button type="button" class="seg-btn active" id="tabS5Sop" role="tab" aria-selected="true" onclick="switchS5Tab('sop', this)">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          1. Simulasi SOP 3D <span class="seg-badge" id="sopTabBadge">0/4</span>
+        </button>
+        <button type="button" class="seg-btn" id="tabS5Quiz" role="tab" aria-selected="false" onclick="switchS5Tab('quiz', this)">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          2. Asesmen 5 Soal <span class="seg-badge" id="quizTabBadge">0/5</span>
+        </button>
+      </div>
+
+      <!-- Tab 1: Sequential 3D Maintenance SOP -->
+      <div id="s5-sop" class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            Praktik Urutan SOP Pemeliharaan (Klik 1 &rarr; 4)
+          </span>
+          <button type="button" class="t-btn" style="min-height:34px; font-size:0.75rem;" onclick="resetSopSteps()">Ulangi SOP</button>
+        </div>
+
+        <button type="button" class="sop-item next-step" id="sop-1" onclick="runSopStep(1)">
+          <span><strong>1. Geser Saklar ke Posisi OFF</strong><br><small style="color:var(--ink-muted);">Memutus arus baterai 9V sebelum konektor dilepas agar rangkaian aman.</small></span>
+          <span class="sop-badge" id="sop-st-1">Jalankan</span>
+        </button>
+        <button type="button" class="sop-item locked" id="sop-2" onclick="runSopStep(2)">
+          <span><strong>2. Tekan Klip &amp; Lepas Konektor RJ-45</strong><br><small style="color:var(--ink-muted);">Hindari menarik kabel paksa agar pin kuningan port tidak bengkok.</small></span>
+          <span class="sop-badge" id="sop-st-2">Menunggu #1</span>
+        </button>
+        <button type="button" class="sop-item locked" id="sop-3" onclick="runSopStep(3)">
+          <span><strong>3. Periksa Kompartemen Baterai 9V</strong><br><small style="color:var(--ink-muted);">Lepas baterai jika alat akan disimpan lama untuk mencegah korosi bocor.</small></span>
+          <span class="sop-badge" id="sop-st-3">Menunggu #2</span>
+        </button>
+        <button type="button" class="sop-item locked" id="sop-4" onclick="runSopStep(4)">
+          <span><strong>4. Bersihkan &amp; Simpan di Pouch Kering (5R)</strong><br><small style="color:var(--ink-muted);">Simpan jauh dari lembap, debu, dan benturan keras.</small></span>
+          <span class="sop-badge" id="sop-st-4">Menunggu #3</span>
+        </button>
+
+        <div id="sopFeedback" class="callout" style="display:none;" role="status" aria-live="polite"></div>
+      </div>
+
+      <!-- Tab 2: 5-Question Assessment -->
+      <div id="s5-quiz" class="panel" style="display:none;">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            Asesmen Studi Kasus (TP 4.1 – 4.4)
+          </span>
+          <span class="pill pill-emerald" id="quizCountPill">0 / 5 Terjawab</span>
+        </div>
+        <div id="quizBody"></div>
+      </div>
+    </section>
+
+    <!-- ==================== LAYAR 6: MEREFLEKSI & LAPORAN PRAKTIK ==================== -->
+    <section class="screen" id="screen-6" data-title="Refleksi Pembelajaran Mendalam dan Lembar Hasil Praktik">
+      <div class="screen-head">
+        <h1 class="screen-title">Rekap Capaian Praktik &amp; Refleksi Diri</h1>
+        <p class="screen-lead">Periksa seluruh capaian praktikum 3D hari ini, lengkapi catatan refleksimu (tersimpan otomatis), lalu unduh atau salin laporan untuk dikumpulkan.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            Rekap Capaian Praktik 3D
+          </span>
+          <span class="pill pill-emerald" id="finalMissionBadge">0 / 5 Misi Tuntas</span>
+        </div>
+        <div id="summaryCards" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <span class="panel-title-left">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Lembar Refleksi Siswa / Kelompok
+          </span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
+          <div class="field-group">
+            <label for="refNama">Nama Siswa / Kelompok</label>
+            <input type="text" id="refNama" class="input-ctrl" placeholder="Contoh: Kelompok 2 - X TKJ 1" oninput="saveSessionState()">
+          </div>
+          <div class="field-group">
+            <label for="refKelas">Kelas</label>
+            <input type="text" id="refKelas" class="input-ctrl" value="X TKJ" oninput="saveSessionState()">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="refQ1">1. Temuan paling penting saat menguji konektivitas kabel dengan LAN Tester 3D:</label>
+          <div class="chip-row no-print">
+            <button type="button" class="mini-chip" onclick="addRefChip('refQ1', 'Posisi klip RJ-45 di bawah menentukan urutan Pin 1 dari kiri')">+ Patokan Klip RJ-45</button>
+            <button type="button" class="mini-chip" onclick="addRefChip('refQ1', 'LED Remote yang mati menandakan jalur putus (Open)')">+ Diagnosis Open</button>
+            <button type="button" class="mini-chip" onclick="addRefChip('refQ1', 'Mode Slow (S) memudahkan pengecekan urutan pin 1 sampai 8')">+ Manfaat Mode Slow</button>
+          </div>
+          <textarea id="refQ1" rows="2" class="input-ctrl" placeholder="Ketik jawabanmu atau gunakan pilihan cepat di atas..." oninput="saveSessionState()"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label for="refQ2">2. Kendala teknis yang dialami saat menyusun warna / mendiagnosis kabel dan solusinya:</label>
+          <div class="chip-row no-print">
+            <button type="button" class="mini-chip" onclick="addRefChip('refQ2', 'Tertukar antara Putih-Hijau dan Biru -> cek ulang panduan T568B')">+ Cek Ulang T568B</button>
+            <button type="button" class="mini-chip" onclick="addRefChip('refQ2', 'Kabel putus/miswired tidak layak pakai -> potong konektor dan crimping ulang')">+ Potong &amp; Crimping Ulang</button>
+          </div>
+          <textarea id="refQ2" rows="2" class="input-ctrl" placeholder="Tuliskan kendala teknis dan perbaikannya..." oninput="saveSessionState()"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label for="refQ3">3. Kebiasaan SOP &amp; pemeliharaan alat ukur yang akan diterapkan di lab sekolah:</label>
+          <textarea id="refQ3" rows="2" class="input-ctrl" placeholder="Contoh: Matikan saklar ke OFF dan tekan klip saat melepas RJ-45..." oninput="saveSessionState()"></textarea>
+        </div>
+
+        <div class="btn-row no-print" style="justify-content:space-between; margin-top:14px;">
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" onclick="downloadReport()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Unduh Laporan (.txt)
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="copyReport()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Salin Teks
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.print()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Cetak / PDF
+            </button>
+          </div>
+          <button type="button" class="btn btn-danger-soft btn-sm" onclick="resetAllSession()">
+            Reset Sesi
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ==================== FLOATING BOTTOM-LEFT ACCESSIBILITY WIDGET ==================== -->
+<button type="button" class="a11y-fab" id="a11yFab" aria-label="Buka Pengaturan Aksesibilitas" aria-expanded="false" aria-controls="a11yPopover" title="Pengaturan Aksesibilitas">
+  <!-- Universal Human Accessibility Icon -->
+  <svg class="ico ico-xl" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="4.8" r="2.1" fill="currentColor" stroke="none"></circle>
+    <path d="M5.5 8.8c2.2.7 4.4 1 6.5 1s4.3-.3 6.5-1"></path>
+    <path d="M12 9.8v4.7"></path>
+    <path d="M9 20l3-5.5 3 5.5"></path>
+  </svg>
+  <span class="a11y-fab-dot" aria-hidden="true"></span>
+</button>
+
+<section class="a11y-popover" id="a11yPopover" role="dialog" aria-label="Panel Pengaturan Aksesibilitas" aria-hidden="true">
+  <div class="a11y-pop-head">
+    <span class="a11y-pop-title">
+      <svg class="ico ico-sm" viewBox="0 0 24 24">
+        <circle cx="12" cy="4.8" r="2" fill="currentColor" stroke="none"></circle>
+        <path d="M5.5 8.8c2.2.7 4.4 1 6.5 1s4.3-.3 6.5-1"></path>
+        <path d="M12 9.8v4.7"></path>
+        <path d="M9 20l3-5.5 3 5.5"></path>
+      </svg>
+      Aksesibilitas
+    </span>
+    <button type="button" class="a11y-close-btn" id="a11yCloseBtn" aria-label="Tutup panel aksesibilitas">
+      <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+
+  <div class="a11y-group">
+    <span class="a11y-group-label">Ukuran Teks</span>
+    <div class="a11y-font-row">
+      <button type="button" class="a11y-seg-btn" data-font-delta="-0.1" aria-label="Perkecil ukuran teks">A-</button>
+      <span class="a11y-font-val" id="fontScaleLabel" aria-live="polite">100%</span>
+      <button type="button" class="a11y-seg-btn" data-font-delta="0.1" aria-label="Perbesar ukuran teks">A+</button>
+    </div>
+  </div>
+
+  <div class="a11y-group">
+    <span class="a11y-group-label">Tema &amp; Kontras</span>
+    <div class="a11y-seg" role="group" aria-label="Pilih tema tampilan">
+      <button type="button" class="a11y-seg-btn active" data-set-theme="daylight">Cerah</button>
+      <button type="button" class="a11y-seg-btn" data-set-theme="slate">Gelap</button>
+      <button type="button" class="a11y-seg-btn" data-set-theme="contrast">Kontras</button>
+    </div>
+  </div>
+
+  <div class="a11y-group">
+    <span class="a11y-group-label">Bantuan Baca &amp; Audio</span>
+    <div class="a11y-toggle-list">
+      <button type="button" class="a11y-toggle-row" id="toggleReadingBtn" aria-pressed="false">
+        <span class="a11y-toggle-left">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
+          Spasi Baca Lebar
+        </span>
+        <span class="switch-pill" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="a11y-toggle-row" id="toggleMotionBtn" aria-pressed="false">
+        <span class="a11y-toggle-left">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path></svg>
+          Kurangi Animasi
+        </span>
+        <span class="switch-pill" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="a11y-toggle-row" id="toggleTtsBtn" aria-pressed="false">
+        <span class="a11y-toggle-left">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <span id="ttsLabel">Bacakan Layar</span>
+        </span>
+        <span class="switch-pill" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="a11y-toggle-row active" id="toggleSfxBtn" aria-pressed="true">
+        <span class="a11y-toggle-left">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          Efek Suara (SFX)
+        </span>
+        <span class="switch-pill" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="a11y-pop-foot">
+    <span style="font-size:0.74rem; color:var(--ink-muted);">Tersimpan otomatis</span>
+    <button type="button" class="btn btn-secondary btn-sm" style="min-height:32px; font-size:0.75rem;" onclick="resetA11ySettings()">Reset Awal</button>
+  </div>
+</section>
+
+<!-- Toast Feedback -->
+<div class="toast" id="toastBox" role="status" aria-live="polite"></div>
+
+<!-- ==================== STICKY BOTTOM NAV ==================== -->
+<footer class="bottom-bar" role="contentinfo">
+  <div class="bottom-inner">
+    <button type="button" class="btn btn-secondary" id="btnPrev" onclick="prevScreen()" disabled>
+      <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+      Sebelumnya
+    </button>
+    <div class="prog-wrap">
+      <div class="prog-text" id="progText">Tahap 1 dari 6 • Orientasi: Kasus &amp; Misi</div>
+      <div class="prog-track" aria-hidden="true">
+        <div class="prog-fill" id="progFill" style="width:16.66%;"></div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" id="btnNext" onclick="nextScreen()">
+      <span id="btnNextLabel">Selanjutnya</span>
+      <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+    </button>
+  </div>
+</footer>
+
+<script>
+// =========================================================================
+// 1. GLOBAL STATE, PERSISTENCE, AUDIO FX & FLOATING A11Y WIDGET
+// =========================================================================
+const STORAGE_A11Y = "tkj_lan3d_a11y_v2";
+const STORAGE_SESSION = "tkj_lan3d_session_v2";
+
+let currentScreen = 1;
+const totalScreens = 6;
+let fontScale = 1.0;
+let activeTheme = "daylight";
+let readingAid = false;
+let reducedMotion = false;
+let sfxOn = true;
+let audioCtx = null;
+let isSpeaking = false;
+let toastTimer = null;
+
+const screensMeta = [
+  { num: 1, tag: "Orientasi",    title: "Kasus & Misi" },
+  { num: 2, tag: "Eksplorasi",   title: "Alat & 3D" },
+  { num: 3, tag: "Rakit",        title: "RJ-45 3D" },
+  { num: 4, tag: "Uji & Lab",    title: "LAN Tester" },
+  { num: 5, tag: "Evaluasi",     title: "SOP & Kuis" },
+  { num: 6, tag: "Refleksi",     title: "Laporan" }
+];
+
+const visitedScreens = new Set([1]);
+const inspectedParts = new Set(["master"]);
+const sopDone = new Set();
+
+function showToast(msg) {
+  const el = document.getElementById("toastBox");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+function playSfx(kind) {
+  if (!sfxOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    const t = audioCtx.currentTime;
+    if (kind === "tap") {
+      osc.type = "sine"; osc.frequency.setValueAtTime(540, t);
+      gain.gain.setValueAtTime(0.045, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.055);
+      osc.start(t); osc.stop(t + 0.055);
+    } else if (kind === "beep") {
+      osc.type = "sine"; osc.frequency.setValueAtTime(860, t);
+      gain.gain.setValueAtTime(0.03, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+      osc.start(t); osc.stop(t + 0.05);
+    } else if (kind === "ok") {
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(523, t);
+      osc.frequency.setValueAtTime(659, t + 0.075);
+      osc.frequency.setValueAtTime(784, t + 0.15);
+      gain.gain.setValueAtTime(0.075, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      osc.start(t); osc.stop(t + 0.28);
+    } else if (kind === "err") {
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(215, t); osc.frequency.linearRampToValueAtTime(140, t + 0.17);
+      gain.gain.setValueAtTime(0.055, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+      osc.start(t); osc.stop(t + 0.2);
+    }
+  } catch (e) {}
+}
+
+// Floating Accessibility Popover Controls
+const a11yFab = document.getElementById("a11yFab");
+const a11yPopover = document.getElementById("a11yPopover");
+const a11yCloseBtn = document.getElementById("a11yCloseBtn");
+
+function setA11yOpen(open) {
+  a11yPopover.classList.toggle("open", open);
+  a11yPopover.setAttribute("aria-hidden", String(!open));
+  a11yFab.setAttribute("aria-expanded", String(open));
+  if (open) {
+    a11yCloseBtn.focus();
+  }
+}
+
+a11yFab.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const willOpen = !a11yPopover.classList.contains("open");
+  setA11yOpen(willOpen);
+  playSfx("tap");
+});
+
+a11yCloseBtn.addEventListener("click", () => {
+  setA11yOpen(false);
+  a11yFab.focus();
+  playSfx("tap");
+});
+
+document.addEventListener("click", (e) => {
+  if (a11yPopover.classList.contains("open") && !a11yPopover.contains(e.target) && !a11yFab.contains(e.target)) {
+    setA11yOpen(false);
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && a11yPopover.classList.contains("open")) {
+    setA11yOpen(false);
+    a11yFab.focus();
+    return;
+  }
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)) return;
+  if (e.key === "f" || e.key === "F") toggleFullscreen();
+  if (e.key === "ArrowRight" && currentScreen < totalScreens) nextScreen();
+  if (e.key === "ArrowLeft" && currentScreen > 1) prevScreen();
+});
+
+function updateA11yBadge() {
+  const isCustom = (fontScale !== 1.0) || (activeTheme !== "daylight") || readingAid || reducedMotion || !sfxOn;
+  a11yFab.classList.toggle("has-custom", isCustom);
+}
+
+function saveA11ySettings() {
+  try {
+    localStorage.setItem(STORAGE_A11Y, JSON.stringify({
+      fontScale, activeTheme, readingAid, reducedMotion, sfxOn
+    }));
+  } catch (e) {}
+  updateA11yBadge();
+}
+
+function applyA11ySettings() {
+  document.documentElement.style.setProperty("--font-scale", fontScale);
+  document.getElementById("fontScaleLabel").textContent = Math.round(fontScale * 100) + "%";
+
+  document.documentElement.setAttribute("data-theme", activeTheme);
+  document.querySelectorAll("[data-set-theme]").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-set-theme") === activeTheme);
+  });
+  update3DTheme(activeTheme);
+
+  document.documentElement.classList.toggle("reading-aid", readingAid);
+  const rBtn = document.getElementById("toggleReadingBtn");
+  rBtn.classList.toggle("active", readingAid);
+  rBtn.setAttribute("aria-pressed", String(readingAid));
+
+  document.documentElement.classList.toggle("reduced-motion", reducedMotion);
+  const mBtn = document.getElementById("toggleMotionBtn");
+  mBtn.classList.toggle("active", reducedMotion);
+  mBtn.setAttribute("aria-pressed", String(reducedMotion));
+
+  const sBtn = document.getElementById("toggleSfxBtn");
+  sBtn.classList.toggle("active", sfxOn);
+  sBtn.setAttribute("aria-pressed", String(sfxOn));
+
+  updateA11yBadge();
+}
+
+function resetA11ySettings() {
+  fontScale = 1.0;
+  activeTheme = "daylight";
+  readingAid = false;
+  reducedMotion = false;
+  sfxOn = true;
+  if (isSpeaking && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    syncTtsButtons(false);
+  }
+  applyA11ySettings();
+  saveA11ySettings();
+  showToast("Pengaturan aksesibilitas dikembalikan ke awal.");
+  playSfx("tap");
+}
+
+document.querySelectorAll("[data-font-delta]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const d = parseFloat(btn.getAttribute("data-font-delta"));
+    fontScale = Math.min(1.35, Math.max(0.85, Math.round((fontScale + d) * 20) / 20));
+    applyA11ySettings();
+    saveA11ySettings();
+    playSfx("tap");
+  });
+});
+
+document.querySelectorAll("[data-set-theme]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeTheme = btn.getAttribute("data-set-theme");
+    applyA11ySettings();
+    saveA11ySettings();
+    playSfx("tap");
+  });
+});
+
+document.getElementById("toggleReadingBtn").addEventListener("click", () => {
+  readingAid = !readingAid;
+  applyA11ySettings();
+  saveA11ySettings();
+  playSfx("tap");
+});
+
+document.getElementById("toggleMotionBtn").addEventListener("click", () => {
+  reducedMotion = !reducedMotion;
+  applyA11ySettings();
+  saveA11ySettings();
+  playSfx("tap");
+});
+
+document.getElementById("toggleSfxBtn").addEventListener("click", () => {
+  sfxOn = !sfxOn;
+  applyA11ySettings();
+  saveA11ySettings();
+  if (sfxOn) playSfx("tap");
+});
+
+document.getElementById("toggleTtsBtn").addEventListener("click", () => {
+  if (!("speechSynthesis" in window)) {
+    showToast("Browser ini belum mendukung fitur Bacakan (TTS).");
+    return;
+  }
+  if (isSpeaking) {
+    window.speechSynthesis.cancel();
+    syncTtsButtons(false);
+    return;
+  }
+  const sec = document.getElementById("screen-" + currentScreen);
+  const text = (sec.querySelector(".screen-title")?.innerText || "") + ". " + (sec.querySelector(".screen-lead")?.innerText || "");
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "id-ID"; u.rate = 0.96;
+  u.onend = () => syncTtsButtons(false);
+  u.onerror = () => syncTtsButtons(false);
+  syncTtsButtons(true);
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+});
+
+function syncTtsButtons(active) {
+  isSpeaking = active;
+  const b = document.getElementById("toggleTtsBtn");
+  b.classList.toggle("active", active);
+  b.setAttribute("aria-pressed", String(active));
+  document.getElementById("ttsLabel").textContent = active ? "Hentikan Bacaan" : "Bacakan Layar";
+}
+
+// Fullscreen
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {
+      showToast("Tekan F11 untuk mode layar penuh di browser ini.");
+    });
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+document.getElementById("btnFullscreen").addEventListener("click", toggleFullscreen);
+document.addEventListener("fullscreenchange", () => {
+  const isFs = Boolean(document.fullscreenElement);
+  const btn = document.getElementById("btnFullscreen");
+  btn.classList.toggle("active", isFs);
+  btn.setAttribute("aria-pressed", String(isFs));
+  document.getElementById("fsLabel").textContent = isFs ? "Keluar" : "Layar Penuh";
+  setTimeout(resizeThree, 120);
+});
+
+function toggleExpandStage() {
+  const wb = document.getElementById("workbench");
+  const expanded = wb.classList.toggle("stage-expanded");
+  document.getElementById("expandStageLabel").textContent = expanded ? "Mode Split" : "Perbesar";
+  setTimeout(resizeThree, 120);
+  playSfx("tap");
+}
+
+function toggleMobileStage() {
+  const card = document.getElementById("stageCard");
+  const collapsed = card.classList.toggle("mobile-collapsed");
+  const btn = document.getElementById("btnCollapseStageMobile");
+  btn.setAttribute("aria-expanded", String(!collapsed));
+  document.getElementById("collapseMobileLabel").textContent = collapsed ? "Buka 3D" : "Lipat 3D";
+  if (!collapsed) setTimeout(resizeThree, 240);
+  playSfx("tap");
+}
+
+// =========================================================================
+// 2. THREE.JS 3D PROCEDURAL HARDWARE ENGINE (WITH RAYCASTING & PINCH ZOOM)
+// =========================================================================
+let scene, camera, renderer, raycaster;
+let testerAssembly, rj45Assembly, gridHelper;
+let masterLeds = [], remoteLeds = [], masterPwrLed;
+let switchKnobMesh, plugLeftMesh, plugRightMesh, batteryCoverMesh;
+let cableCurve, pulseSphere, breakMarker, focusRing;
+let rj45WireMeshes = [], rj45PinMeshes = [], rj45InnerGroup;
+let interactive3DMeshes = [];
+let threeReady = false;
+let activeStageMode = "tester";
+
+const camTarget = { theta: 0.14, phi: 1.24, radius: 8.2, lookX: 0, lookY: 0.62, lookZ: 0 };
+const camCurrent = { theta: 0.14, phi: 1.24, radius: 8.2, lookX: 0, lookY: 0.62, lookZ: 0 };
+let isDragging3D = false, pointerMovedDist = 0, lastPX = 0, lastPY = 0;
+const activePointers = new Map();
+let lastPinchDist = null;
+
+// Animation targets
+let targetSwitchY = -0.26;
+let targetPlugLift = 0;
+let targetBatteryOpen = 0;
+let targetRJ45Flip = 0;
+let crimpPulseTimer = 0;
+let pulseT = 0;
+let currentPulseFaultOpen = false;
+let currentPulseActive = false;
+
+const WIRE_SPECS = [
+  { code: "PO", name: "Putih-Oranye", base: "#FFFFFF", stripe: "#F97316", cls: "sw-PO" },
+  { code: "O",  name: "Oranye",       base: "#F97316", stripe: null,      cls: "sw-O"  },
+  { code: "PH", name: "Putih-Hijau",  base: "#FFFFFF", stripe: "#16A34A", cls: "sw-PH" },
+  { code: "B",  name: "Biru",         base: "#2563EB", stripe: null,      cls: "sw-B"  },
+  { code: "PB", name: "Putih-Biru",   base: "#FFFFFF", stripe: "#2563EB", cls: "sw-PB" },
+  { code: "H",  name: "Hijau",        base: "#16A34A", stripe: null,      cls: "sw-H"  },
+  { code: "PC", name: "Putih-Cokelat",base: "#FFFFFF", stripe: "#92400E", cls: "sw-PC" },
+  { code: "C",  name: "Cokelat",      base: "#92400E", stripe: null,      cls: "sw-C"  }
+];
+
+const wireTextureCache = {};
+
+function makeWireTexture(code) {
+  if (!threeReady || typeof THREE === "undefined") return null;
+  if (wireTextureCache[code]) return wireTextureCache[code];
+  const spec = WIRE_SPECS.find(w => w.code === code) || WIRE_SPECS[0];
+  const c = document.createElement("canvas");
+  c.width = 128; c.height = 128;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = spec.base;
+  ctx.fillRect(0, 0, 128, 128);
+  if (spec.stripe) {
+    ctx.fillStyle = spec.stripe;
+    for (let y = -128; y < 256; y += 32) {
+      ctx.beginPath();
+      ctx.moveTo(0, y); ctx.lineTo(128, y + 64);
+      ctx.lineTo(128, y + 78); ctx.lineTo(0, y + 14);
+      ctx.closePath(); ctx.fill();
+    }
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(1, 3);
+  wireTextureCache[code] = tex;
+  return tex;
+}
+
+function makeFaceplateTexture(title, isMaster) {
+  const c = document.createElement("canvas");
+  c.width = 256; c.height = 512;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#0F172A";
+  ctx.fillRect(0, 0, 256, 512);
+
+  ctx.fillStyle = isMaster ? "#0284C7" : "#059669";
+  ctx.fillRect(14, 14, 228, 50);
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = "bold 24px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(title, 128, 47);
+
+  ctx.fillStyle = "#94A3B8";
+  ctx.font = "bold 14px sans-serif";
+  ctx.fillText(isMaster ? "RJ-45 MASTER TX" : "RJ-45 REMOTE RX", 128, 86);
+
+  ctx.fillStyle = "#E2E8F0";
+  ctx.font = "bold 24px monospace";
+  ctx.textAlign = "right";
+  for (let i = 1; i <= 8; i++) {
+    const y = 132 + (i - 1) * 42;
+    ctx.fillText(String(i), isMaster ? 112 : 120, y + 8);
+  }
+
+  if (isMaster) {
+    ctx.fillStyle = "#38BDF8";
+    ctx.font = "bold 15px monospace";
+    ctx.textAlign = "left";
+    ctx.fillText("S", 30, 175);
+    ctx.fillText("ON", 26, 232);
+    ctx.fillText("OFF", 22, 290);
+    ctx.fillStyle = "#94A3B8";
+    ctx.font = "bold 13px sans-serif";
+    ctx.fillText("PWR", 24, 120);
+  }
+  return new THREE.CanvasTexture(c);
+}
+
+function makePinNumberTexture(num) {
+  const c = document.createElement("canvas");
+  c.width = 64; c.height = 64;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#0F172A";
+  ctx.beginPath(); ctx.arc(32, 32, 28, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = "#38BDF8"; ctx.lineWidth = 4; ctx.stroke();
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = "bold 34px monospace";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(String(num), 32, 34);
+  return new THREE.CanvasTexture(c);
+}
+
+function tagInteractive(mesh, partKey) {
+  mesh.userData.partKey = partKey;
+  interactive3DMeshes.push(mesh);
+  return mesh;
+}
+
+function initThree() {
+  const canvas = document.getElementById("threeCanvas");
+  const wrap = document.getElementById("viewportWrap");
+  if (typeof THREE === "undefined") {
+    document.getElementById("webglFallback").classList.add("visible");
+    return;
+  }
+
+  try {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(40, wrap.clientWidth / Math.max(1, wrap.clientHeight), 0.1, 100);
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    raycaster = new THREE.Raycaster();
+    threeReady = true;
+  } catch (err) {
+    document.getElementById("webglFallback").classList.add("visible");
+    return;
+  }
+
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x334155, 0.98);
+  hemi.position.set(0, 10, 0);
+  scene.add(hemi);
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.08);
+  keyLight.position.set(5, 9, 7);
+  keyLight.castShadow = true;
+  scene.add(keyLight);
+
+  const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.55);
+  rimLight.position.set(-6, 4, -5);
+  scene.add(rimLight);
+
+  gridHelper = new THREE.GridHelper(16, 20, 0x0284c7, 0x94a3b8);
+  gridHelper.position.y = -1.65;
+  gridHelper.material.opacity = 0.26;
+  gridHelper.material.transparent = true;
+  scene.add(gridHelper);
+
+  // ---------------- ASSEMBLY A: DUAL-UNIT LAN TESTER ----------------
+  testerAssembly = new THREE.Group();
+  scene.add(testerAssembly);
+
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.42, metalness: 0.25 });
+  const trimMasterMat = new THREE.MeshStandardMaterial({ color: 0x0284C7, roughness: 0.35, metalness: 0.2 });
+  const trimRemoteMat = new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.35, metalness: 0.2 });
+  const portMat = new THREE.MeshStandardMaterial({ color: 0x020617, roughness: 0.8 });
+  const goldMat = new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.25, metalness: 0.85 });
+  const crystalMat = new THREE.MeshPhysicalMaterial({
+    color: 0xE0F2FE, transparent: true, opacity: 0.52, roughness: 0.12, metalness: 0.05
+  });
+
+  // --- MASTER UNIT ---
+  const masterUnit = new THREE.Group();
+  masterUnit.position.set(-1.55, 0, 0);
+  testerAssembly.add(masterUnit);
+
+  const mBody = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(1.75, 3.15, 0.72), bodyMat), "master");
+  mBody.castShadow = true; mBody.receiveShadow = true;
+  masterUnit.add(mBody);
+
+  const mTrim = new THREE.Mesh(new THREE.BoxGeometry(1.82, 3.05, 0.55), trimMasterMat);
+  masterUnit.add(mTrim);
+
+  const mFaceMat = new THREE.MeshStandardMaterial({ map: makeFaceplateTexture("MASTER", true), roughness: 0.5 });
+  const mFace = tagInteractive(new THREE.Mesh(new THREE.PlaneGeometry(1.58, 2.95), mFaceMat), "master");
+  mFace.position.z = 0.365;
+  masterUnit.add(mFace);
+
+  const pwrMat = new THREE.MeshStandardMaterial({ color: 0x334155, emissive: 0x000000, roughness: 0.25 });
+  masterPwrLed = new THREE.Mesh(new THREE.SphereGeometry(0.075, 16, 16), pwrMat);
+  masterPwrLed.position.set(-0.42, 0.78, 0.38);
+  masterUnit.add(masterPwrLed);
+
+  const swTrack = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.94, 0.12), portMat), "switch");
+  swTrack.position.set(-0.42, 0.08, 0.37);
+  masterUnit.add(swTrack);
+
+  switchKnobMesh = tagInteractive(
+    new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.24, 0.24), new THREE.MeshStandardMaterial({ color: 0xF1F5F9, roughness: 0.28 })),
+    "switch"
+  );
+  switchKnobMesh.position.set(-0.42, -0.26, 0.45);
+  masterUnit.add(switchKnobMesh);
+
+  masterLeds = [];
+  for (let i = 0; i < 8; i++) {
+    const lMat = new THREE.MeshStandardMaterial({ color: 0x334155, emissive: 0x000000, emissiveIntensity: 1.5, roughness: 0.2 });
+    const led = tagInteractive(new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), lMat), "leds");
+    const y = 0.72 - i * 0.245;
+    led.position.set(0.24, y, 0.39);
+    masterUnit.add(led);
+    masterLeds.push(led);
+  }
+
+  const mPort = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.16, 0.5), portMat), "port");
+  mPort.position.set(0, 1.58, 0);
+  masterUnit.add(mPort);
+
+  batteryCoverMesh = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.05, 0.56), new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.4 }));
+  batteryCoverMesh.position.set(-0.92, -0.65, 0);
+  masterUnit.add(batteryCoverMesh);
+
+  // --- REMOTE UNIT ---
+  const remoteUnit = new THREE.Group();
+  remoteUnit.position.set(1.55, 0, 0);
+  testerAssembly.add(remoteUnit);
+
+  const rBody = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(1.38, 3.15, 0.72), bodyMat), "remote");
+  rBody.castShadow = true; rBody.receiveShadow = true;
+  remoteUnit.add(rBody);
+
+  const rTrim = new THREE.Mesh(new THREE.BoxGeometry(1.45, 3.05, 0.55), trimRemoteMat);
+  remoteUnit.add(rTrim);
+
+  const rFaceMat = new THREE.MeshStandardMaterial({ map: makeFaceplateTexture("REMOTE", false), roughness: 0.5 });
+  const rFace = tagInteractive(new THREE.Mesh(new THREE.PlaneGeometry(1.22, 2.95), rFaceMat), "remote");
+  rFace.position.z = 0.365;
+  remoteUnit.add(rFace);
+
+  remoteLeds = [];
+  for (let i = 0; i < 8; i++) {
+    const lMat = new THREE.MeshStandardMaterial({ color: 0x334155, emissive: 0x000000, emissiveIntensity: 1.5, roughness: 0.2 });
+    const led = tagInteractive(new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), lMat), "leds");
+    const y = 0.72 - i * 0.245;
+    led.position.set(0.18, y, 0.39);
+    remoteUnit.add(led);
+    remoteLeds.push(led);
+  }
+
+  const rPort = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.16, 0.5), portMat), "port");
+  rPort.position.set(0, 1.58, 0);
+  remoteUnit.add(rPort);
+
+  // --- PLUGS & ARCHED UTP CABLE ---
+  plugLeftMesh = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.36), crystalMat), "rj45");
+  plugLeftMesh.position.set(-1.55, 1.75, 0);
+  testerAssembly.add(plugLeftMesh);
+
+  plugRightMesh = tagInteractive(new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.36), crystalMat), "rj45");
+  plugRightMesh.position.set(1.55, 1.75, 0);
+  testerAssembly.add(plugRightMesh);
+
+  cableCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-1.55, 1.92, 0),
+    new THREE.Vector3(-1.45, 2.75, 0.1),
+    new THREE.Vector3(0, 3.12, 0.25),
+    new THREE.Vector3(1.45, 2.75, 0.1),
+    new THREE.Vector3(1.55, 1.92, 0)
+  ]);
+  const cableGeo = new THREE.TubeGeometry(cableCurve, 44, 0.11, 14, false);
+  const cableMat = new THREE.MeshStandardMaterial({ color: 0x0284C7, roughness: 0.42, metalness: 0.1 });
+  testerAssembly.add(new THREE.Mesh(cableGeo, cableMat));
+
+  pulseSphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.18, 16, 16),
+    new THREE.MeshStandardMaterial({ color: 0x10B981, emissive: 0x10B981, emissiveIntensity: 2.0 })
+  );
+  pulseSphere.visible = false;
+  testerAssembly.add(pulseSphere);
+
+  breakMarker = new THREE.Mesh(
+    new THREE.OctahedronGeometry(0.24, 0),
+    new THREE.MeshStandardMaterial({ color: 0xEF4444, emissive: 0xEF4444, emissiveIntensity: 1.6 })
+  );
+  breakMarker.position.set(0, 3.12, 0.25);
+  breakMarker.visible = false;
+  testerAssembly.add(breakMarker);
+
+  focusRing = new THREE.Mesh(
+    new THREE.TorusGeometry(0.95, 0.045, 12, 48),
+    new THREE.MeshStandardMaterial({ color: 0x38BDF8, emissive: 0x38BDF8, emissiveIntensity: 1.2 })
+  );
+  focusRing.visible = false;
+  testerAssembly.add(focusRing);
+
+  // ---------------- ASSEMBLY B: MACRO 3D RJ-45 CONNECTOR ----------------
+  rj45Assembly = new THREE.Group();
+  rj45Assembly.visible = false;
+  scene.add(rj45Assembly);
+
+  rj45InnerGroup = new THREE.Group();
+  rj45Assembly.add(rj45InnerGroup);
+
+  const shellGeo = new THREE.BoxGeometry(2.65, 1.15, 2.35);
+  const shellMat = new THREE.MeshPhysicalMaterial({
+    color: 0xE0F2FE, transparent: true, opacity: 0.34, roughness: 0.12, metalness: 0.05, depthWrite: false
+  });
+  const shellMesh = new THREE.Mesh(shellGeo, shellMat);
+  shellMesh.position.set(0, 0, 0.2);
+  rj45InnerGroup.add(shellMesh);
+
+  const edges = new THREE.EdgesGeometry(shellGeo);
+  const edgeLines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x0284C7, transparent: true, opacity: 0.85 }));
+  edgeLines.position.copy(shellMesh.position);
+  rj45InnerGroup.add(edgeLines);
+
+  const clipBase = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.18, 1.75), new THREE.MeshStandardMaterial({ color: 0x94A3B8, transparent: true, opacity: 0.78 }));
+  clipBase.position.set(0, -0.68, -0.1);
+  clipBase.rotation.x = 0.16;
+  rj45InnerGroup.add(clipBase);
+
+  const clipLatch = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.24, 0.28), new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.35 }));
+  clipLatch.position.set(0, -0.82, -0.85);
+  rj45InnerGroup.add(clipLatch);
+
+  const jacket = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.54, 0.56, 2.4, 24),
+    new THREE.MeshStandardMaterial({ color: 0x0284C7, roughness: 0.45 })
+  );
+  jacket.rotation.x = Math.PI / 2;
+  jacket.position.set(0, 0, -2.15);
+  rj45InnerGroup.add(jacket);
+
+  rj45WireMeshes = [];
+  rj45PinMeshes = [];
+  for (let i = 0; i < 8; i++) {
+    const x = -1.05 + i * 0.30;
+    const wGeo = new THREE.CylinderGeometry(0.115, 0.115, 2.25, 16);
+    const wMat = new THREE.MeshStandardMaterial({ map: makeWireTexture(WIRE_SPECS[i].code), roughness: 0.35 });
+    const wire = new THREE.Mesh(wGeo, wMat);
+    wire.rotation.x = Math.PI / 2;
+    wire.position.set(x, 0, 0.15);
+    rj45InnerGroup.add(wire);
+    rj45WireMeshes.push(wire);
+
+    const pin = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.26, 0.52), goldMat);
+    pin.position.set(x, 0.45, 1.05);
+    rj45InnerGroup.add(pin);
+    rj45PinMeshes.push(pin);
+
+    const numPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.28, 0.28),
+      new THREE.MeshBasicMaterial({ map: makePinNumberTexture(i + 1), transparent: true, side: THREE.DoubleSide })
+    );
+    numPlane.position.set(x, 0.92, 0.85);
+    rj45InnerGroup.add(numPlane);
+  }
+
+  // Pointer Orbit, Pinch-to-Zoom & Direct 3D Click Raycasting
+  const vp = document.getElementById("viewportWrap");
+
+  function raycastPart(clientX, clientY) {
+    if (!threeReady || activeStageMode !== "tester") return null;
+    const rect = canvas.getBoundingClientRect();
+    const mouse = new THREE.Vector2(
+      ((clientX - rect.left) / rect.width) * 2 - 1,
+      -((clientY - rect.top) / rect.height) * 2 + 1
+    );
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(interactive3DMeshes, false);
+    if (hits.length > 0) return hits[0].object.userData.partKey || null;
+    return null;
+  }
+
+  vp.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("button")) return;
+    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (activePointers.size === 1) {
+      isDragging3D = true;
+      pointerMovedDist = 0;
+      lastPX = e.clientX; lastPY = e.clientY;
+    } else if (activePointers.size === 2) {
+      isDragging3D = false;
+      const pts = Array.from(activePointers.values());
+      lastPinchDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    }
+    vp.setPointerCapture(e.pointerId);
+  });
+
+  vp.addEventListener("pointermove", (e) => {
+    if (activePointers.has(e.pointerId)) {
+      activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    }
+    if (activePointers.size === 2 && lastPinchDist !== null) {
+      const pts = Array.from(activePointers.values());
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      const delta = lastPinchDist - dist;
+      camTarget.radius = Math.max(3.4, Math.min(11.5, camTarget.radius + delta * 0.018));
+      lastPinchDist = dist;
+      return;
+    }
+    if (isDragging3D) {
+      const dx = e.clientX - lastPX;
+      const dy = e.clientY - lastPY;
+      pointerMovedDist += Math.hypot(dx, dy);
+      lastPX = e.clientX; lastPY = e.clientY;
+      camTarget.theta -= dx * 0.008;
+      camTarget.phi = Math.max(0.35, Math.min(2.35, camTarget.phi - dy * 0.007));
+    } else if (e.pointerType === "mouse") {
+      const part = raycastPart(e.clientX, e.clientY);
+      vp.classList.toggle("hover-interactive", Boolean(part));
+    }
+  });
+
+  function endPointer(e) {
+    const wasTap = isDragging3D && pointerMovedDist < 7 && activePointers.size === 1;
+    activePointers.delete(e.pointerId);
+    if (activePointers.size < 2) lastPinchDist = null;
+    if (activePointers.size === 0) isDragging3D = false;
+
+    if (wasTap && !e.target.closest("button")) {
+      const hitPart = raycastPart(e.clientX, e.clientY);
+      if (hitPart) handle3DPartClick(hitPart);
+    }
+  }
+
+  vp.addEventListener("pointerup", endPointer);
+  vp.addEventListener("pointercancel", endPointer);
+
+  vp.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    camTarget.radius = Math.max(3.4, Math.min(11.5, camTarget.radius + e.deltaY * 0.004));
+  }, { passive: false });
+
+  window.addEventListener("resize", resizeThree);
+  animateThree();
+}
+
+function handle3DPartClick(partKey) {
+  if (partKey === "switch" && (currentScreen === 4 || currentScreen === 1)) {
+    const order = ["OFF", "ON", "SLOW"];
+    const nextMode = order[(order.indexOf(testerSwitch) + 1) % order.length];
+    setTesterSwitch(nextMode);
+    showToast(`Saklar 3D digeser ke ${nextMode === "SLOW" ? "S (SLOW)" : nextMode}`);
+    return;
+  }
+  if (currentScreen === 2) {
+    switchS2Tab("inspect", document.querySelectorAll("#screen-2 .seg-btn")[0]);
+    inspectPart(partKey);
+    return;
+  }
+  if (partKey === "switch" && currentScreen === 5 && !sopDone.has(1)) {
+    runSopStep(1);
+    return;
+  }
+  if (partKey === "rj45" && currentScreen === 5 && sopDone.has(1) && !sopDone.has(2)) {
+    runSopStep(2);
+    return;
+  }
+  if (partKey === "switch") {
+    const order = ["OFF", "ON", "SLOW"];
+    const nextMode = order[(order.indexOf(testerSwitch) + 1) % order.length];
+    setTesterSwitch(nextMode);
+  }
+}
+
+function resizeThree() {
+  if (!threeReady) return;
+  const wrap = document.getElementById("viewportWrap");
+  if (!wrap || wrap.clientWidth === 0 || wrap.clientHeight === 0) return;
+  camera.aspect = wrap.clientWidth / wrap.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+}
+
+function update3DTheme(theme) {
+  if (!threeReady || !gridHelper) return;
+  if (theme === "contrast") gridHelper.material.opacity = 0.55;
+  else if (theme === "slate") gridHelper.material.opacity = 0.24;
+  else gridHelper.material.opacity = 0.26;
+}
+
+function showStageAssembly(mode) {
+  activeStageMode = mode;
+  document.getElementById("stageModeLabel").textContent =
+    mode === "rj45" ? "3D MACRO • KONEKTOR RJ-45 & 8 KAWAT" : "3D WORKBENCH • LAN TESTER";
+  document.getElementById("toggle3DLabel").textContent =
+    mode === "rj45" ? "Lihat LAN Tester" : "Lihat RJ-45";
+  if (threeReady) {
+    testerAssembly.visible = (mode === "tester");
+    rj45Assembly.visible = (mode === "rj45");
+  }
+}
+
+function toggleStageAssembly() {
+  if (activeStageMode === "tester") {
+    showStageAssembly("rj45");
+    setCameraPreset("rj45");
+  } else {
+    showStageAssembly("tester");
+    setCameraPreset("bench");
+  }
+  playSfx("tap");
+}
+
+function setCameraPreset(preset) {
+  document.querySelectorAll(".cam-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-preset") === preset);
+  });
+  if (preset === "bench") {
+    showStageAssembly("tester");
+    Object.assign(camTarget, { theta: 0.14, phi: 1.24, radius: 8.2, lookX: 0, lookY: 0.62, lookZ: 0 });
+  } else if (preset === "master") {
+    showStageAssembly("tester");
+    Object.assign(camTarget, { theta: -0.15, phi: 1.38, radius: 4.5, lookX: -1.55, lookY: 0.1, lookZ: 0 });
+  } else if (preset === "remote") {
+    showStageAssembly("tester");
+    Object.assign(camTarget, { theta: 0.15, phi: 1.38, radius: 4.5, lookX: 1.55, lookY: 0.1, lookZ: 0 });
+  } else if (preset === "switch") {
+    showStageAssembly("tester");
+    Object.assign(camTarget, { theta: -0.22, phi: 1.44, radius: 3.8, lookX: -1.9, lookY: 0.15, lookZ: 0.35 });
+  } else if (preset === "port") {
+    showStageAssembly("tester");
+    Object.assign(camTarget, { theta: 0.25, phi: 0.95, radius: 4.6, lookX: 0, lookY: 1.85, lookZ: 0 });
+  } else if (preset === "rj45") {
+    showStageAssembly("rj45");
+    Object.assign(camTarget, { theta: 0.28, phi: 1.12, radius: 4.8, lookX: 0, lookY: 0.1, lookZ: 0 });
+  }
+}
+
+function flipRJ45Clip() {
+  showStageAssembly("rj45");
+  targetRJ45Flip = (targetRJ45Flip === 0) ? Math.PI : 0;
+  document.getElementById("hudStatusText").textContent =
+    targetRJ45Flip === 0 ? "KLIP RJ-45: DI BAWAH (PIN 1 KIRI)" : "KLIP RJ-45: DI ATAS (LIHAT PENGUNCI)";
+  playSfx("tap");
+}
+
+function sync3DRJ45Wires(wireArray) {
+  if (!threeReady) return;
+  for (let i = 0; i < 8; i++) {
+    const tex = makeWireTexture(wireArray[i]);
+    if (tex && rj45WireMeshes[i]) {
+      rj45WireMeshes[i].material.map = tex;
+      rj45WireMeshes[i].material.needsUpdate = true;
+    }
+  }
+}
+
+function animateThree() {
+  requestAnimationFrame(animateThree);
+  if (!threeReady) return;
+
+  const lerpK = reducedMotion ? 1.0 : 0.095;
+  camCurrent.theta += (camTarget.theta - camCurrent.theta) * lerpK;
+  camCurrent.phi += (camTarget.phi - camCurrent.phi) * lerpK;
+  camCurrent.radius += (camTarget.radius - camCurrent.radius) * lerpK;
+  camCurrent.lookX += (camTarget.lookX - camCurrent.lookX) * lerpK;
+  camCurrent.lookY += (camTarget.lookY - camCurrent.lookY) * lerpK;
+  camCurrent.lookZ += (camTarget.lookZ - camCurrent.lookZ) * lerpK;
+
+  if (currentScreen === 1 && !isDragging3D && !reducedMotion && activeStageMode === "tester" && testerSwitch === "OFF") {
+    camTarget.theta = Math.sin(Date.now() * 0.00045) * 0.32;
+  }
+
+  camera.position.x = camCurrent.lookX + camCurrent.radius * Math.sin(camCurrent.phi) * Math.sin(camCurrent.theta);
+  camera.position.y = camCurrent.lookY + camCurrent.radius * Math.cos(camCurrent.phi);
+  camera.position.z = camCurrent.lookZ + camCurrent.radius * Math.sin(camCurrent.phi) * Math.cos(camCurrent.theta);
+  camera.lookAt(camCurrent.lookX, camCurrent.lookY, camCurrent.lookZ);
+
+  if (switchKnobMesh) {
+    switchKnobMesh.position.y += (targetSwitchY - switchKnobMesh.position.y) * (reducedMotion ? 1 : 0.2);
+  }
+  if (plugLeftMesh && plugRightMesh) {
+    const ty = 1.75 + targetPlugLift;
+    plugLeftMesh.position.y += (ty - plugLeftMesh.position.y) * (reducedMotion ? 1 : 0.14);
+    plugRightMesh.position.y += (ty - plugRightMesh.position.y) * (reducedMotion ? 1 : 0.14);
+  }
+  if (batteryCoverMesh) {
+    const tx = -0.92 - targetBatteryOpen;
+    batteryCoverMesh.position.x += (tx - batteryCoverMesh.position.x) * (reducedMotion ? 1 : 0.14);
+  }
+  if (rj45InnerGroup) {
+    rj45InnerGroup.rotation.z += (targetRJ45Flip - rj45InnerGroup.rotation.z) * (reducedMotion ? 1 : 0.14);
+  }
+  if (crimpPulseTimer > 0) {
+    crimpPulseTimer = Math.max(0, crimpPulseTimer - 0.045);
+    const offset = Math.sin(crimpPulseTimer * Math.PI) * 0.12;
+    rj45PinMeshes.forEach(p => { p.position.y = 0.45 - offset; });
+  }
+
+  // Signal pulse traveling along UTP cable
+  const isDetective = (currentScreen === 4 && labMode === "detective");
+  if (currentPulseActive && pulseSphere && cableCurve) {
+    pulseSphere.visible = true;
+    pulseT = (pulseT + (testerSwitch === "ON" ? 0.038 : 0.018)) % 1;
+    const maxT = currentPulseFaultOpen ? 0.48 : 1.0;
+    const evalT = Math.min(pulseT, maxT);
+    const pt = cableCurve.getPoint(evalT);
+    pulseSphere.position.copy(pt);
+    const col = (!isDetective && currentPulseFaultOpen) ? 0xEF4444 : 0x10B981;
+    pulseSphere.material.color.setHex(col);
+    pulseSphere.material.emissive.setHex(col);
+    breakMarker.visible = (!isDetective && currentPulseFaultOpen);
+    if (breakMarker.visible && !reducedMotion) breakMarker.rotation.y += 0.05;
+  } else if (pulseSphere) {
+    pulseSphere.visible = false;
+    if (breakMarker) breakMarker.visible = false;
+  }
+
+  if (focusRing && focusRing.visible && !reducedMotion) {
+    focusRing.rotation.z += 0.024;
+  }
+
+  renderer.render(scene, camera);
+}
+
+// =========================================================================
+// 3. NAVIGATION, PROGRESS SYNC & SCREEN COORDINATION
+// =========================================================================
+function getMissionsProgress() {
+  const qOk = quizData.filter((it, i) => qAnswers[i] === it.ans).length;
+  const qPct = Math.round((qOk / quizData.length) * 100);
+  const list = [
+    { id: "inspect", screen: 2, label: "Anatomi 3D LAN Tester (TP 4.1)", val: `${inspectedParts.size} / 6 bagian`, ok: inspectedParts.size >= 4 },
+    { id: "crimp",   screen: 3, label: "Rakit & Crimping RJ-45 3D (TP 4.3)", val: lastCrimpResult.type, ok: lastCrimpResult.passed },
+    { id: "det",     screen: 4, label: "Tantangan Detektif Kabel (TP 4.2)", val: `${detSolved.size} / 4 kasus`, ok: detSolved.size >= 2 },
+    { id: "sop",     screen: 5, label: "SOP Pemeliharaan 3D (TP 4.4)", val: `${sopDone.size} / 4 langkah`, ok: sopDone.size === 4 },
+    { id: "quiz",    screen: 5, label: "Asesmen Studi Kasus", val: `${qPct} / 100 (${qOk}/5 benar)`, ok: qPct >= 70 }
+  ];
+  const doneCount = list.filter(x => x.ok).length;
+  return { list, doneCount, qOk, qPct };
+}
+
+function updateGlobalBadges() {
+  const { doneCount } = getMissionsProgress();
+  document.getElementById("topProgressCount").textContent = `${doneCount}/5`;
+  document.getElementById("finalMissionBadge").textContent = `${doneCount} / 5 Misi Tuntas`;
+  const answered = qAnswers.filter(x => x !== null).length;
+  document.getElementById("sopTabBadge").textContent = `${sopDone.size}/4`;
+  document.getElementById("quizTabBadge").textContent = `${answered}/${quizData.length}`;
+  document.getElementById("detTabBadge").textContent = `${detSolved.size}/4`;
+}
+
+function renderStepper() {
+  const track = document.getElementById("stepperTrack");
+  track.innerHTML = screensMeta.map(s => {
+    const act = s.num === currentScreen;
+    const done = visitedScreens.has(s.num) && !act;
+    return `
+      <button type="button" class="step-chip ${act ? "active" : ""} ${done ? "done" : ""}" data-step="${s.num}" onclick="goToScreen(${s.num})" aria-current="${act ? "step" : "false"}">
+        <span class="step-badge">${done ? "✓" : s.num}</span>
+        <span class="step-labels">
+          <span class="step-tag">${s.tag}</span>
+          <span class="step-title">${s.title}</span>
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  const activeChip = track.querySelector(`.step-chip[data-step="${currentScreen}"]`);
+  if (activeChip && activeChip.scrollIntoView) {
+    activeChip.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", inline: "center", block: "nearest" });
+  }
+}
+
+function goToScreen(num, options = {}) {
+  if (isSpeaking && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    syncTtsButtons(false);
+  }
+  currentScreen = num;
+  visitedScreens.add(num);
+  document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+  document.getElementById("screen-" + num).classList.add("active");
+  renderStepper();
+
+  document.getElementById("btnPrev").disabled = (num === 1);
+  const bn = document.getElementById("btnNext");
+  bn.disabled = (num === totalScreens);
+  document.getElementById("btnNextLabel").textContent = (num === totalScreens) ? "Selesai" : "Selanjutnya";
+
+  const m = screensMeta[num - 1];
+  document.getElementById("progText").textContent = `Tahap ${num} dari ${totalScreens} • ${m.tag}: ${m.title}`;
+  document.getElementById("progFill").style.width = `${(num / totalScreens) * 100}%`;
+
+  if (focusRing) focusRing.visible = false;
+
+  if (num === 1) {
+    targetPlugLift = 0; targetBatteryOpen = 0;
+    setCameraPreset("bench");
+  } else if (num === 2) {
+    setTesterSwitch("OFF", true);
+    targetPlugLift = 0; targetBatteryOpen = 0;
+    inspectPart("master", true);
+  } else if (num === 3) {
+    setTesterSwitch("OFF", true);
+    showStageAssembly("rj45");
+    setCameraPreset("rj45");
+    sync3DRJ45Wires(activeEnd === "A" ? wireEndA : wireEndB);
+  } else if (num === 4) {
+    targetPlugLift = 0; targetBatteryOpen = 0;
+    setCameraPreset("bench");
+    if (options.loadCustomCable) {
+      switchLabMode("explore", document.getElementById("tabLabExplore"), true);
+      loadSimScenario("custom", true);
+    } else if (testerSwitch === "OFF") {
+      setTesterSwitch("SLOW", true);
+    }
+  } else if (num === 5) {
+    setCameraPreset("bench");
+    if (options.openQuizTab) {
+      switchS5Tab("quiz", document.getElementById("tabS5Quiz"), true);
+    }
+  } else if (num === 6) {
+    setCameraPreset("bench");
+    renderFinalSummary();
+  }
+
+  updateGlobalBadges();
+  window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+  if (!options.silent) playSfx("tap");
+}
+
+function nextScreen() { if (currentScreen < totalScreens) goToScreen(currentScreen + 1); }
+function prevScreen() { if (currentScreen > 1) goToScreen(currentScreen - 1); }
+
+// =========================================================================
+// 4. SCREEN 1 & SCREEN 2 (STUDI KASUS LIVE 3D, ANATOMI 3D, KATALOG ALAT)
+// =========================================================================
+function showPemantik(choice) {
+  document.getElementById("pemantikBtn1").classList.toggle("active", choice === 1);
+  document.getElementById("pemantikBtn2").classList.toggle("active", choice === 2);
+  const out = document.getElementById("pemantikOut");
+  out.style.display = "block";
+  if (choice === 1) {
+    setTesterSwitch("OFF", true);
+    out.className = "callout callout-amber";
+    out.innerHTML = "<strong>Risiko Tanpa Alat Ukur:</strong> Memotong dan meng-<em>crimping</em> ulang secara acak membuang konektor RJ-45 dan waktu kerja. Jika kabel putus di tengah jalur, crimping ulang pun tidak akan menyelesaikan masalah.";
+    playSfx("err");
+  } else {
+    out.className = "callout callout-emerald";
+    out.innerHTML = "<strong>Tepat (SOP Industri)!</strong> Perhatikan simulasi LAN Tester 3D sekarang: dalam beberapa detik terlihat <strong>Pin 3 putus (Open)</strong> — Master menyala tetapi Remote mati. Itulah alasan kita memverifikasi kabel sebelum dipasang!";
+    // Trigger live 3D demo right on Screen 1!
+    loadSimScenario("open3", true);
+    setTesterSwitch("SLOW", true);
+    playSfx("ok");
+  }
+}
+
+function switchS2Tab(tab, btn) {
+  document.getElementById("s2-inspect").style.display = (tab === "inspect") ? "block" : "none";
+  document.getElementById("s2-ecosystem").style.display = (tab === "ecosystem") ? "block" : "none";
+  btn.parentElement.querySelectorAll(".seg-btn").forEach(b => {
+    b.classList.toggle("active", b === btn);
+    b.setAttribute("aria-selected", String(b === btn));
+  });
+  playSfx("tap");
+}
+
+const inspectorInfo = {
+  master: {
+    title: "1. Unit Master (Transmitter / TX)",
+    desc: "Mengirimkan pulsa listrik secara berurutan dari Pin 1 sampai Pin 8 ke ujung kabel satunya. Di dalam bodinya terdapat baterai 9V dan saklar utama.",
+    preset: "master", ringPos: [-1.55, 0, 0.42]
+  },
+  remote: {
+    title: "2. Unit Remote (Receiver / RX)",
+    desc: "Menerima sinyal dari Unit Master dan menyalakan LED 1–8 sesuai kawat yang terhubung. Unit ini bisa dilepas untuk menguji kabel yang sudah terpasang antar-ruangan.",
+    preset: "remote", ringPos: [1.55, 0, 0.42]
+  },
+  switch: {
+    title: "3. Saklar 3 Posisi (OFF / ON / S)",
+    desc: "<strong>OFF:</strong> Mematikan alat. <strong>ON:</strong> Pemindaian cepat otomatis. <strong>S (Slow):</strong> Pemindaian lambat — sangat dianjurkan agar urutan LED 1–8 terbaca teliti.",
+    preset: "switch", ringPos: [-1.97, 0.08, 0.45]
+  },
+  leds: {
+    title: "4. Deret Lampu LED 1–8 & G (Ground)",
+    desc: "Menampilkan kontinuitas tiap helai tembaga. Pada kabel Straight normal, LED 1–8 Master dan Remote menyala serentak berurutan. LED <code>G</code> aktif khusus kabel berpelindung (STP/FTP).",
+    preset: "master", ringPos: [-1.3, -0.1, 0.44]
+  },
+  port: {
+    title: "5. Port RJ-45 (dan RJ-11)",
+    desc: "Soket untuk mencolokkan konektor RJ-45 hingga berbunyi 'klik'. Saat melepas, wajib tekan klip pengunci agar pin kuningan port tidak bengkok.",
+    preset: "port", ringPos: [-1.55, 1.68, 0]
+  },
+  rj45: {
+    title: "6. Konektor RJ-45 & Patokan Klip",
+    desc: "Aturan emas crimping: posisikan <strong>klip pengunci di bawah</strong> (menjauh dari pandangan), maka <strong>Pin 1 selalu dimulai dari kiri</strong> ke Pin 8 di kanan.",
+    preset: "rj45", ringPos: null
+  }
+};
+
+function inspectPart(key, silent = false) {
+  inspectedParts.add(key);
+  document.getElementById("inspectProg").textContent = `Anatomi 3D: ${inspectedParts.size} / 6`;
+  document.querySelectorAll(".hs-btn").forEach(b => {
+    const k = b.getAttribute("data-hs");
+    b.classList.toggle("active", k === key);
+    b.classList.toggle("visited", inspectedParts.has(k));
+  });
+  const info = inspectorInfo[key];
+  document.getElementById("inspectCard").innerHTML = `<strong>${info.title}</strong><p style="margin-top:5px;">${info.desc}</p>`;
+  setCameraPreset(info.preset);
+  if (threeReady && focusRing) {
+    if (info.ringPos) {
+      focusRing.visible = true;
+      focusRing.position.set(...info.ringPos);
+    } else {
+      focusRing.visible = false;
+    }
+  }
+  updateGlobalBadges();
+  saveSessionState();
+  if (!silent) playSfx("tap");
+}
+
+const industryTools = [
+  { name: "LAN Tester", scope: "Kabel Tembaga UTP/STP", detail: "Menguji kontinuitas & urutan pin kabel LAN RJ-45/RJ-11 untuk mendeteksi kondisi Normal, Open (putus), Miswired (tertukar), dan Short (korslet)." },
+  { name: "OPM (Optical Power Meter)", scope: "Kabel Fiber Optik", detail: "Mengukur kekuatan daya sinyal cahaya (dBm) pada ujung serat optik agar redaman jaringan tetap dalam batas standar ISP." },
+  { name: "OTDR", scope: "Fiber Optik Jarak Jauh", detail: "Optical Time Domain Reflectometer — melacak titik putus, tekukan (bending), atau sambungan kurang rapat pada fiber optik hingga presisi meter." },
+  { name: "Multimeter", scope: "Kelistrikan & Perangkat", detail: "Mengukur tegangan (Volt), arus (Ampere), dan hambatan (Ohm) pada adaptor router, power supply server, atau jalur kelistrikan rak." },
+  { name: "Earth Tester", scope: "Grounding Tower & Server", detail: "Mengukur tahanan pentanahan (grounding) pada menara BTS/wireless dan rak server sesuai standar K3LH untuk proteksi petir." },
+  { name: "Wi-Fi Analyzer & Ping/Speed Test", scope: "Nirkabel & Layanan IP", detail: "Menganalisis kekuatan sinyal Wi-Fi (RSSI), tumpang tindih kanal (channel overlap), latensi (ping), dan kapasitas bandwidth." }
+];
+
+function initToolCatalog() {
+  document.getElementById("toolCatalogGrid").innerHTML = industryTools.map((t, i) => `
+    <button type="button" class="tool-card ${i === 0 ? "active" : ""}" onclick="selectIndustryTool(${i}, this)">
+      <div class="tool-card-name">${t.name}</div>
+      <div class="tool-card-sub">${t.scope}</div>
+    </button>
+  `).join("");
+  document.getElementById("toolDetailBox").innerHTML = `<strong>${industryTools[0].name}:</strong> ${industryTools[0].detail}`;
+}
+
+function selectIndustryTool(idx, el) {
+  document.querySelectorAll(".tool-card").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
+  const t = industryTools[idx];
+  document.getElementById("toolDetailBox").innerHTML = `<strong>${t.name} (${t.scope}):</strong> ${t.detail}`;
+  playSfx("tap");
+}
+
+// =========================================================================
+// 5. SCREEN 3: RAKIT KABEL UTP & RJ-45 3D (T568B / T568A)
+// =========================================================================
+const STD_T568B = ["PO", "O", "PH", "B", "PB", "H", "PC", "C"];
+const STD_T568A = ["PH", "H", "PO", "B", "PB", "O", "PC", "C"];
+
+let cableTarget = "straight";
+let activeEnd = "A";
+let wireEndA = ["PO", "O", "B", "PH", "PB", "H", "PC", "C"]; // Intentional swap on Pin 3-4 for warm-up
+let wireEndB = [...STD_T568B];
+let selectedWireCode = null;
+let swapSlotIdx = null;
+let lastCrimpResult = { passed: false, type: "Belum diuji", accuracy: 0 };
+
+function getTargetForEnd(end) {
+  if (cableTarget === "straight") return STD_T568B;
+  return (end === "A") ? STD_T568A : STD_T568B;
+}
+
+function setCableTarget(t) {
+  cableTarget = t;
+  document.getElementById("btnModeStraight").className = (t === "straight") ? "btn btn-primary btn-sm" : "btn btn-secondary btn-sm";
+  document.getElementById("btnModeCross").className = (t === "cross") ? "btn btn-primary btn-sm" : "btn btn-secondary btn-sm";
+  renderWiringUI();
+  saveSessionState();
+  playSfx("tap");
+}
+
+function selectCableEnd(end) {
+  activeEnd = end;
+  swapSlotIdx = null;
+  selectedWireCode = null;
+  document.getElementById("btnEndA").classList.toggle("active", end === "A");
+  document.getElementById("btnEndB").classList.toggle("active", end === "B");
+  renderWiringUI();
+  sync3DRJ45Wires(end === "A" ? wireEndA : wireEndB);
+  playSfx("tap");
+}
+
+function toggleWiringGuide() {
+  const b = document.getElementById("wiringGuideBox");
+  const open = b.style.display === "none";
+  b.style.display = open ? "block" : "none";
+  document.getElementById("btnWiringGuide").setAttribute("aria-expanded", String(open));
+  playSfx("tap");
+}
+
+function updateEndBadges() {
+  const okA = wireEndA.filter((c, i) => c === getTargetForEnd("A")[i]).length;
+  const okB = wireEndB.filter((c, i) => c === getTargetForEnd("B")[i]).length;
+  document.getElementById("endABadge").textContent = okA === 8 ? "✓ 8/8" : `${okA}/8`;
+  document.getElementById("endBBadge").textContent = okB === 8 ? "✓ 8/8" : `${okB}/8`;
+}
+
+function renderWiringUI(validationMarks = null) {
+  const stdLabel = (cableTarget === "cross" && activeEnd === "A") ? "T568A" : "T568B";
+  document.getElementById("activeEndLabel").textContent = `Ujung ${activeEnd} — Target ${stdLabel}`;
+  updateEndBadges();
+
+  const hintBar = document.getElementById("wiringHintBar");
+  if (selectedWireCode) {
+    const sp = WIRE_SPECS.find(w => w.code === selectedWireCode);
+    hintBar.className = "wiring-hint-bar selecting";
+    hintBar.innerHTML = `<span>Warna <strong>${sp.name} (${sp.code})</strong> terpilih — ketuk slot Pin 1–8 untuk menempatkannya.</span>`;
+  } else if (swapSlotIdx !== null) {
+    hintBar.className = "wiring-hint-bar selecting";
+    hintBar.innerHTML = `<span><strong>Pin ${swapSlotIdx + 1}</strong> terpilih — ketuk pin lain untuk menukar posisinya.</span>`;
+  } else {
+    hintBar.className = "wiring-hint-bar";
+    hintBar.innerHTML = `<span><strong>Cara Rakit:</strong> Ketuk 1 warna lalu ketuk slot Pin 1–8, atau ketuk 2 slot pin untuk menukar posisinya.</span>`;
+  }
+
+  document.getElementById("wirePalette").innerHTML = WIRE_SPECS.map(w => `
+    <button type="button" class="wire-chip ${selectedWireCode === w.code ? "selected" : ""}" onclick="pickWireColor('${w.code}')">
+      <span class="wire-swatch ${w.cls}" aria-hidden="true"></span>
+      <span><span class="mono">${w.code}</span><br><small style="font-weight:600; font-size:0.66rem; color:var(--ink-muted);">${w.name.replace("Putih-","P-")}</small></span>
+    </button>
+  `).join("");
+
+  const arr = (activeEnd === "A") ? wireEndA : wireEndB;
+  document.getElementById("pinSlotsGrid").innerHTML = arr.map((code, i) => {
+    const spec = WIRE_SPECS.find(w => w.code === code) || WIRE_SPECS[0];
+    let cls = "";
+    if (swapSlotIdx === i) cls = "swap-selected";
+    else if (validationMarks) cls = validationMarks[i] ? "slot-ok" : "slot-err";
+    return `
+      <button type="button" class="pin-slot ${cls}" onclick="tapPinSlot(${i})" aria-label="Pin ${i + 1}, warna saat ini ${spec.name}">
+        <span class="mono" style="font-size:0.74rem; font-weight:800;">P${i + 1}</span>
+        <span class="pin-bar ${spec.cls}" aria-hidden="true"></span>
+        <span class="pin-code">${spec.code}</span>
+      </button>
+    `;
+  }).join("");
+
+  sync3DRJ45Wires(arr);
+}
+
+function pickWireColor(code) {
+  selectedWireCode = (selectedWireCode === code) ? null : code;
+  swapSlotIdx = null;
+  renderWiringUI();
+  playSfx("tap");
+}
+
+function tapPinSlot(idx) {
+  const arr = (activeEnd === "A") ? wireEndA : wireEndB;
+  if (selectedWireCode) {
+    const existingIdx = arr.indexOf(selectedWireCode);
+    if (existingIdx !== -1 && existingIdx !== idx) {
+      arr[existingIdx] = arr[idx];
+    }
+    arr[idx] = selectedWireCode;
+    selectedWireCode = null;
+  } else if (swapSlotIdx === null) {
+    swapSlotIdx = idx;
+  } else {
+    const tmp = arr[swapSlotIdx];
+    arr[swapSlotIdx] = arr[idx];
+    arr[idx] = tmp;
+    swapSlotIdx = null;
+  }
+  renderWiringUI();
+  saveSessionState();
+  playSfx("tap");
+}
+
+function autoFillEnd() {
+  const target = getTargetForEnd(activeEnd);
+  if (activeEnd === "A") wireEndA = [...target];
+  else wireEndB = [...target];
+  selectedWireCode = null;
+  swapSlotIdx = null;
+  renderWiringUI();
+  saveSessionState();
+  playSfx("tap");
+}
+
+function shuffleEnd() {
+  const arr = [...STD_T568B].sort(() => Math.random() - 0.5);
+  if (activeEnd === "A") wireEndA = arr;
+  else wireEndB = arr;
+  selectedWireCode = null;
+  swapSlotIdx = null;
+  renderWiringUI();
+  saveSessionState();
+  playSfx("tap");
+}
+
+function crimpAndValidate() {
+  crimpPulseTimer = 1.0;
+  const targetA = getTargetForEnd("A");
+  const targetB = getTargetForEnd("B");
+  const marksA = wireEndA.map((c, i) => c === targetA[i]);
+  const marksB = wireEndB.map((c, i) => c === targetB[i]);
+  const okA = marksA.filter(Boolean).length;
+  const okB = marksB.filter(Boolean).length;
+  const totalOk = okA + okB;
+  const pct = Math.round((totalOk / 16) * 100);
+
+  renderWiringUI(activeEnd === "A" ? marksA : marksB);
+
+  const fb = document.getElementById("crimpFeedback");
+  const statusPill = document.getElementById("crimpStatusPill");
+  fb.style.display = "block";
+
+  if (totalOk === 16) {
+    lastCrimpResult = {
+      passed: true,
+      type: cableTarget === "straight" ? "Straight-Through (T568B–B)" : "Crossover (T568A–B)",
+      accuracy: 100
+    };
+    statusPill.className = "pill pill-emerald";
+    statusPill.textContent = "Crimping Lolos (100%)";
+    fb.className = "callout callout-emerald";
+    fb.innerHTML = `
+      <div><strong>Crimping 100% Presisi!</strong> Kedua ujung (${lastCrimpResult.type}) lolos standar TIA/EIA-568.</div>
+      <div style="margin-top:10px;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="goToScreen(4, { loadCustomCable: true })">
+          Uji Kabel Rakitan di LAN Tester 3D &rarr;
+        </button>
+      </div>
+    `;
+    playSfx("ok");
+  } else {
+    lastCrimpResult = { passed: false, type: `Belum Sesuai (${pct}%)`, accuracy: pct };
+    statusPill.className = "pill pill-crimson";
+    statusPill.textContent = `Akurasi ${pct}%`;
+    fb.className = "callout callout-crimson";
+    fb.innerHTML = `
+      <div><strong>Belum Sesuai Standar (${pct}%).</strong> Ujung A: ${okA}/8, Ujung B: ${okB}/8. Slot merah menandakan urutan kawat belum cocok.</div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="goToScreen(4, { loadCustomCable: true })">
+          Lihat Efek Error-nya di LAN Tester 3D &rarr;
+        </button>
+      </div>
+    `;
+    playSfx("err");
+  }
+  updateGlobalBadges();
+  saveSessionState();
+}
+
+// =========================================================================
+// 6. SCREEN 4: LAB MAYA LAN TESTER 3D & DETEKTIF GANGGUAN (REALISTIC LEDS)
+// =========================================================================
+let testerSwitch = "OFF";
+let scanTimer = null;
+let currentPin = 0;
+let labMode = "explore";
+let pinTraceData = {}; // pin 1..8 -> string readout
+
+let activeSimConfig = {
+  label: "Straight Normal",
+  map: { 1:[1], 2:[2], 3:[3], 4:[4], 5:[5], 6:[6], 7:[7], 8:[8] },
+  faultType: "straight"
+};
+
+function initTelemetryDOM() {
+  const mRow = document.getElementById("teleMasterRow");
+  const rRow = document.getElementById("teleRemoteRow");
+  const traceGrid = document.getElementById("pinTraceGrid");
+  mRow.innerHTML = ""; rRow.innerHTML = ""; traceGrid.innerHTML = "";
+  for (let i = 1; i <= 8; i++) {
+    mRow.innerHTML += `<div class="led-cell"><div class="led-bulb" id="t-m-${i}"></div><span class="led-num">${i}</span></div>`;
+    rRow.innerHTML += `<div class="led-cell"><div class="led-bulb" id="t-r-${i}"></div><span class="led-num">${i}</span></div>`;
+    traceGrid.innerHTML += `<div class="trace-cell" id="trace-${i}">${i}:—</div>`;
+  }
+}
+
+function resetPinTrace() {
+  pinTraceData = {};
+  for (let i = 1; i <= 8; i++) {
+    const el = document.getElementById("trace-" + i);
+    if (el) {
+      el.className = "trace-cell";
+      el.textContent = `${i}:—`;
+    }
+  }
+}
+
+function buildCustomCableMap() {
+  const map = {};
+  for (let i = 0; i < 8; i++) {
+    const color = wireEndA[i];
+    const j = wireEndB.indexOf(color);
+    map[i + 1] = (j !== -1) ? [j + 1] : [];
+  }
+  const isStraight = Object.keys(map).every(k => map[k].length === 1 && map[k][0] === Number(k));
+  const isCross = (map[1][0]===3 && map[2][0]===6 && map[3][0]===1 && map[4][0]===4 && map[5][0]===5 && map[6][0]===2 && map[7][0]===7 && map[8][0]===8);
+  return {
+    label: isStraight ? "Rakitanmu (Straight Normal)" : isCross ? "Rakitanmu (Crossover Normal)" : "Rakitanmu (Terdeteksi Miswired)",
+    map,
+    faultType: isStraight ? "straight" : isCross ? "cross" : "miswired"
+  };
+}
+
+const PRESET_SCENARIOS = {
+  straight: {
+    label: "Straight-Through Normal",
+    map: { 1:[1], 2:[2], 3:[3], 4:[4], 5:[5], 6:[6], 7:[7], 8:[8] },
+    faultType: "straight",
+    note: "<strong>Pola Straight Normal:</strong> Master 1–8 dan Remote 1–8 menyala berurutan identik. Layak pakai untuk PC &harr; Switch/Router."
+  },
+  cross: {
+    label: "Crossover Normal (T568A–B)",
+    map: { 1:[3], 2:[6], 3:[1], 4:[4], 5:[5], 6:[2], 7:[7], 8:[8] },
+    faultType: "cross",
+    note: "<strong>Pola Crossover Normal:</strong> Master 1&rarr;3, 2&rarr;6, 3&rarr;1, 4&rarr;4, 5&rarr;5, 6&rarr;2, 7&rarr;7, 8&rarr;8. Cocok untuk perangkat sejenis (PC &harr; PC)."
+  },
+  open3: {
+    label: "Gangguan: Open / Putus (Pin 3)",
+    map: { 1:[1], 2:[2], 3:[], 4:[4], 5:[5], 6:[6], 7:[7], 8:[8] },
+    faultType: "open",
+    note: "<strong>Terdeteksi OPEN (Putus) di Pin 3!</strong> Saat Master Pin 3 menyala, Remote mati &amp; pulsa 3D terhenti di tengah kabel. Solusi: potong konektor &amp; crimping ulang."
+  },
+  miswire45: {
+    label: "Gangguan: Miswired (Pin 4↔5)",
+    map: { 1:[1], 2:[2], 3:[3], 4:[5], 5:[4], 6:[6], 7:[7], 8:[8] },
+    faultType: "miswired",
+    note: "<strong>Terdeteksi MISWIRED (Tertukar)!</strong> Master Pin 4 menyalakan Remote Pin 5, dan Master Pin 5 menyalakan Remote Pin 4. Wajib crimping ulang."
+  },
+  short67: {
+    label: "Gangguan: Short / Korslet (Pin 6+7)",
+    map: { 1:[1], 2:[2], 3:[3], 4:[4], 5:[5], 6:[6,7], 7:[6,7], 8:[8] },
+    faultType: "short",
+    note: "<strong>Terdeteksi SHORT (Korslet) pada Pin 6 &amp; 7!</strong> Kedua LED Remote 6 dan 7 menyala bersamaan karena kawat tembaga bersentuhan. Kabel tidak layak pakai."
+  }
+};
+
+function loadSimScenario(key, silent = false) {
+  document.querySelectorAll(".scenario-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-sc") === key);
+  });
+  resetPinTrace();
+
+  if (key === "custom") {
+    activeSimConfig = buildCustomCableMap();
+    document.getElementById("exploreDiagBox").innerHTML =
+      `<strong>Menguji Kabel Rakitanmu dari Layar 3:</strong> ${activeSimConfig.label}. Perhatikan pola LED Master vs Remote dan baris Rekam Jejak Pin!`;
+  } else {
+    const p = PRESET_SCENARIOS[key];
+    activeSimConfig = { label: p.label, map: p.map, faultType: p.faultType };
+    document.getElementById("exploreDiagBox").innerHTML = p.note;
+  }
+  document.getElementById("activeCableBadge").textContent = "Kabel Aktif: " + activeSimConfig.label;
+  if (testerSwitch === "OFF") setTesterSwitch("SLOW", silent);
+  else {
+    currentPin = 1;
+    renderPinPulse(1);
+  }
+  if (!silent) playSfx("tap");
+}
+
+function setTesterSwitch(mode, silent = false) {
+  testerSwitch = mode;
+  clearInterval(scanTimer);
+
+  document.getElementById("sw-off").className = (mode === "OFF") ? "sw-btn active-off" : "sw-btn";
+  document.getElementById("sw-on").className = (mode === "ON") ? "sw-btn active" : "sw-btn";
+  document.getElementById("sw-slow").className = (mode === "SLOW") ? "sw-btn active" : "sw-btn";
+
+  if (mode === "OFF") {
+    targetSwitchY = -0.26;
+    currentPin = 0;
+    currentPulseActive = false;
+    currentPulseFaultOpen = false;
+    clearAllLeds();
+    resetPinTrace();
+    document.getElementById("hudStatusText").textContent = "SW: OFF • ALAT MATI";
+  } else {
+    targetSwitchY = (mode === "ON") ? 0.08 : 0.40;
+    currentPulseActive = true;
+    document.getElementById("hudStatusText").textContent = `SW: ${mode === "SLOW" ? "S (SLOW)" : "ON"} • MEMINDAI 1–8`;
+    if (threeReady && masterPwrLed) {
+      masterPwrLed.material.color.setHex(0x10B981);
+      masterPwrLed.material.emissive.setHex(0x10B981);
+    }
+    const intervalMs = (mode === "ON") ? 480 : 1050;
+    currentPin = (currentPin % 8) + 1;
+    renderPinPulse(currentPin);
+    scanTimer = setInterval(() => {
+      currentPin = (currentPin % 8) + 1;
+      renderPinPulse(currentPin);
+    }, intervalMs);
+  }
+  if (!silent) playSfx("tap");
+}
+
+function stepTesterPin() {
+  clearInterval(scanTimer);
+  testerSwitch = "SLOW";
+  targetSwitchY = 0.40;
+  document.getElementById("sw-off").className = "sw-btn";
+  document.getElementById("sw-on").className = "sw-btn";
+  document.getElementById("sw-slow").className = "sw-btn active";
+  currentPulseActive = true;
+  currentPin = (currentPin % 8) + 1;
+  renderPinPulse(currentPin);
+  document.getElementById("hudStatusText").textContent = `STEP MANUAL • PIN ${currentPin} / 8`;
+  playSfx("beep");
+}
+
+function clearAllLeds() {
+  document.getElementById("teleMasterPin").textContent = "PIN: —";
+  document.getElementById("teleRemotePin").textContent = "PIN: —";
+  for (let i = 1; i <= 8; i++) {
+    document.getElementById("t-m-" + i).className = "led-bulb";
+    document.getElementById("t-r-" + i).className = "led-bulb";
+    const tc = document.getElementById("trace-" + i);
+    if (tc) tc.classList.remove("active-now");
+  }
+  if (threeReady) {
+    if (masterPwrLed) {
+      masterPwrLed.material.color.setHex(0x334155);
+      masterPwrLed.material.emissive.setHex(0x000000);
+    }
+    masterLeds.forEach(l => { l.material.color.setHex(0x334155); l.material.emissive.setHex(0x000000); });
+    remoteLeds.forEach(l => { l.material.color.setHex(0x334155); l.material.emissive.setHex(0x000000); });
+  }
+}
+
+function renderPinPulse(pin) {
+  clearAllLeds();
+  if (threeReady && masterPwrLed) {
+    masterPwrLed.material.color.setHex(0x10B981);
+    masterPwrLed.material.emissive.setHex(0x10B981);
+  }
+
+  const isDetective = (currentScreen === 4 && labMode === "detective");
+  const targets = activeSimConfig.map[pin] || [];
+  currentPulseFaultOpen = (targets.length === 0);
+
+  // Master LED
+  document.getElementById("teleMasterPin").textContent = `PIN: ${pin}`;
+  document.getElementById("t-m-" + pin).className = "led-bulb on-ok";
+  if (threeReady && masterLeds[pin - 1]) {
+    masterLeds[pin - 1].material.color.setHex(0x10B981);
+    masterLeds[pin - 1].material.emissive.setHex(0x10B981);
+  }
+
+  const traceEl = document.getElementById("trace-" + pin);
+
+  if (targets.length === 0) {
+    // Open fault — in Detective mode, keep realistic hardware output (no label leak!)
+    document.getElementById("teleRemotePin").textContent = isDetective ? "PIN: — (MATI)" : "MATI (OPEN!)";
+    if (!isDetective) {
+      document.getElementById("t-m-" + pin).className = "led-bulb on-fault";
+      if (threeReady && masterLeds[pin - 1]) {
+        masterLeds[pin - 1].material.color.setHex(0xEF4444);
+        masterLeds[pin - 1].material.emissive.setHex(0xEF4444);
+      }
+    }
+    if (traceEl) {
+      traceEl.textContent = `${pin}→✕`;
+      traceEl.className = isDetective ? "trace-cell trace-seen active-now" : "trace-cell trace-open active-now";
+    }
+  } else if (targets.length > 1) {
+    document.getElementById("teleRemotePin").textContent = isDetective ? `PIN: ${targets.join("+")}` : `SHORT: ${targets.join("+")}`;
+    const bulbCls = isDetective ? "on-ok" : "on-short";
+    const hexCol = isDetective ? 0x10B981 : 0xA855F7;
+    targets.forEach(rp => {
+      document.getElementById("t-r-" + rp).className = "led-bulb " + bulbCls;
+      if (threeReady && remoteLeds[rp - 1]) {
+        remoteLeds[rp - 1].material.color.setHex(hexCol);
+        remoteLeds[rp - 1].material.emissive.setHex(hexCol);
+      }
+    });
+    if (traceEl) {
+      traceEl.textContent = `${pin}→${targets.join("+")}`;
+      traceEl.className = isDetective ? "trace-cell trace-seen active-now" : "trace-cell trace-short active-now";
+    }
+  } else {
+    const rp = targets[0];
+    const isMatch = (rp === pin);
+    const isExpectedCross = activeSimConfig.faultType === "cross";
+    const cssClass = (isDetective || isMatch || isExpectedCross) ? "on-ok" : "on-warn";
+    const hexCol = (isDetective || isMatch || isExpectedCross) ? 0x10B981 : 0xF59E0B;
+    document.getElementById("teleRemotePin").textContent = `PIN: ${rp}`;
+    document.getElementById("t-r-" + rp).className = "led-bulb " + cssClass;
+    if (threeReady && remoteLeds[rp - 1]) {
+      remoteLeds[rp - 1].material.color.setHex(hexCol);
+      remoteLeds[rp - 1].material.emissive.setHex(hexCol);
+    }
+    if (traceEl) {
+      traceEl.textContent = `${pin}→${rp}`;
+      traceEl.className = (!isDetective && !isMatch && !isExpectedCross)
+        ? "trace-cell trace-warn active-now"
+        : "trace-cell trace-seen active-now";
+    }
+  }
+}
+
+// Detective Challenge Mode (4 Cases)
+const detectiveCases = [
+  {
+    short: "Kasus 1",
+    title: "Kasus 1 / 4 — Kabel Lab Ruang Guru",
+    map: { 1:[1], 2:[2], 3:[3], 4:[4], 5:[], 6:[6], 7:[7], 8:[8] },
+    ansCond: "open", ansAct: "recrimp",
+    explain: "Pin 5 pada Remote tidak menyala (<strong>Open / Putus</strong>). Kabel tidak layak pakai — potong konektor dan crimping ulang."
+  },
+  {
+    short: "Kasus 2",
+    title: "Kasus 2 / 4 — Kabel Patch Cord Baru",
+    map: { 1:[1], 2:[2], 3:[3], 4:[4], 5:[5], 6:[6], 7:[7], 8:[8] },
+    ansCond: "straight", ansAct: "pass",
+    explain: "Seluruh LED 1–8 menyala berurutan identik (<strong>Normal Straight-Through</strong>). Kabel layak dipasang ke Switch."
+  },
+  {
+    short: "Kasus 3",
+    title: "Kasus 3 / 4 — Kabel Praktikum Siswa",
+    map: { 1:[1], 2:[2], 3:[4], 4:[3], 5:[5], 6:[6], 7:[7], 8:[8] },
+    ansCond: "miswired", ansAct: "recrimp",
+    explain: "Master 3 menyalakan Remote 4 dan Master 4 menyalakan Remote 3 (<strong>Miswired / Tertukar</strong>). Wajib diperbaiki &amp; crimping ulang."
+  },
+  {
+    short: "Kasus 4",
+    title: "Kasus 4 / 4 — Kabel Koneksi PC-to-PC",
+    map: { 1:[3], 2:[6], 3:[1], 4:[4], 5:[5], 6:[2], 7:[7], 8:[8] },
+    ansCond: "cross", ansAct: "pass",
+    explain: "Pola 1&rarr;3, 2&rarr;6, 3&rarr;1, 6&rarr;2 adalah pola sah <strong>Normal Crossover</strong>. Layak pakai untuk koneksi antar perangkat sejenis."
+  }
+];
+
+let detIdx = 0;
+let detSolved = new Set();
+
+function renderDetectiveCaseNav() {
+  document.getElementById("detCaseNav").innerHTML = detectiveCases.map((c, idx) => {
+    const isAct = idx === detIdx;
+    const isSolved = detSolved.has(idx);
+    return `
+      <button type="button" class="case-pill-btn ${isAct ? "active" : ""} ${isSolved ? "solved" : ""}" onclick="loadDetectiveCase(${idx})">
+        ${isSolved ? "✓ " : ""}${c.short}
+      </button>
+    `;
+  }).join("");
+}
+
+function switchLabMode(mode, btn, silent = false) {
+  labMode = mode;
+  document.getElementById("lab-explore").style.display = (mode === "explore") ? "block" : "none";
+  document.getElementById("lab-detective").style.display = (mode === "detective") ? "block" : "none";
+  btn.parentElement.querySelectorAll(".seg-btn").forEach(b => {
+    b.classList.toggle("active", b === btn);
+    b.setAttribute("aria-selected", String(b === btn));
+  });
+  if (mode === "detective") {
+    loadDetectiveCase(detIdx, silent);
+  } else {
+    loadSimScenario("straight", silent);
+  }
+  if (!silent) playSfx("tap");
+}
+
+function loadDetectiveCase(idx, silent = false) {
+  detIdx = idx % detectiveCases.length;
+  const c = detectiveCases[detIdx];
+  resetPinTrace();
+  activeSimConfig = { label: "Kabel Misteri #" + (detIdx + 1), map: c.map, faultType: c.ansCond };
+  document.getElementById("activeCableBadge").textContent = "Kabel Aktif: " + activeSimConfig.label;
+  document.getElementById("detCaseTitle").textContent = c.title;
+  document.getElementById("detCondition").value = "";
+  document.getElementById("detAction").value = "";
+  document.getElementById("detFeedback").style.display = "none";
+  document.getElementById("btnNextDetCase").style.display = "none";
+  renderDetectiveCaseNav();
+  setTesterSwitch("SLOW", true);
+  if (!silent) playSfx("tap");
+}
+
+function submitDetective() {
+  const cond = document.getElementById("detCondition").value;
+  const act = document.getElementById("detAction").value;
+  const fb = document.getElementById("detFeedback");
+  if (!cond || !act) {
+    fb.style.display = "block"; fb.className = "callout callout-amber";
+    fb.innerHTML = "Pilih dahulu <strong>kondisi konektivitas kabel</strong> dan <strong>rekomendasi tindak lanjut SOP</strong>.";
+    playSfx("err"); return;
+  }
+  const c = detectiveCases[detIdx];
+  fb.style.display = "block";
+  if (cond === c.ansCond && act === c.ansAct) {
+    detSolved.add(detIdx);
+    document.getElementById("detScorePill").textContent = `Skor Detektif: ${detSolved.size} / 4`;
+    renderDetectiveCaseNav();
+    updateGlobalBadges();
+    saveSessionState();
+
+    fb.className = "callout callout-emerald";
+    const allDone = detSolved.size === detectiveCases.length;
+    fb.innerHTML = `
+      <div><strong>Diagnosis Tepat!</strong> ${c.explain}</div>
+      ${allDone ? `<div style="margin-top:10px;"><button type="button" class="btn btn-primary btn-sm" onclick="goToScreen(5)">Semua 4 Kasus Tuntas — Lanjut ke SOP &amp; Kuis &rarr;</button></div>` : ""}
+    `;
+    document.getElementById("btnNextDetCase").style.display = allDone ? "none" : "inline-flex";
+    playSfx("ok");
+  } else {
+    fb.className = "callout callout-crimson";
+    fb.innerHTML = `<strong>Belum Tepat.</strong> Periksa baris <strong>Rekam Jejak Pin</strong> (di bawah panggung 3D) atau klik <strong>STEP +1</strong> untuk memeriksa urutan Master vs Remote satu per satu.`;
+    playSfx("err");
+  }
+}
+
+function nextDetectiveCase() {
+  let nextIdx = (detIdx + 1) % detectiveCases.length;
+  for (let i = 1; i <= detectiveCases.length; i++) {
+    const cand = (detIdx + i) % detectiveCases.length;
+    if (!detSolved.has(cand)) { nextIdx = cand; break; }
+  }
+  loadDetectiveCase(nextIdx);
+}
+
+// =========================================================================
+// 7. SCREEN 5: SEQUENTIAL SOP PEMELIHARAAN 3D & ASESMEN 5 SOAL
+// =========================================================================
+function switchS5Tab(tab, btn, silent = false) {
+  document.getElementById("s5-sop").style.display = (tab === "sop") ? "block" : "none";
+  document.getElementById("s5-quiz").style.display = (tab === "quiz") ? "block" : "none";
+  btn.parentElement.querySelectorAll(".seg-btn").forEach(b => {
+    b.classList.toggle("active", b === btn);
+    b.setAttribute("aria-selected", String(b === btn));
+  });
+  if (!silent) playSfx("tap");
+}
+
+function updateSopUI() {
+  const nextStep = sopDone.size + 1;
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById("sop-" + i);
+    const st = document.getElementById("sop-st-" + i);
+    el.classList.remove("done", "next-step", "locked");
+    if (sopDone.has(i)) {
+      el.classList.add("done");
+      st.textContent = "✓ Selesai";
+    } else if (i === nextStep) {
+      el.classList.add("next-step");
+      st.textContent = "Jalankan";
+    } else {
+      el.classList.add("locked");
+      st.textContent = `Menunggu #${i - 1}`;
+    }
+  }
+  updateGlobalBadges();
+}
+
+function runSopStep(step) {
+  const fb = document.getElementById("sopFeedback");
+  const expected = sopDone.size + 1;
+
+  if (sopDone.has(step)) {
+    // Allow re-viewing camera for already done step
+    if (step === 1) setCameraPreset("switch");
+    else if (step === 2) setCameraPreset("port");
+    else if (step === 3) setCameraPreset("master");
+    else setCameraPreset("bench");
+    playSfx("tap");
+    return;
+  }
+
+  if (step !== expected) {
+    fb.style.display = "block";
+    fb.className = "callout callout-amber";
+    const hints = {
+      1: "Jalankan <strong>Langkah 1 (Geser Saklar ke OFF)</strong> terlebih dahulu agar tidak ada aliran arus saat konektor dilepas!",
+      2: "Jalankan <strong>Langkah 2 (Tekan Klip &amp; Lepas RJ-45)</strong> sebelum membuka kompartemen baterai.",
+      3: "Jalankan <strong>Langkah 3 (Periksa Kompartemen Baterai 9V)</strong> sebelum alat dimasukkan ke pouch penyimpanan."
+    };
+    fb.innerHTML = `<strong>Urutan SOP Belum Tepat:</strong> ${hints[expected]}`;
+    playSfx("err");
+    return;
+  }
+
+  if (step === 1) {
+    setTesterSwitch("OFF", true);
+    setCameraPreset("switch");
+  } else if (step === 2) {
+    targetPlugLift = 0.65;
+    setCameraPreset("port");
+  } else if (step === 3) {
+    targetBatteryOpen = 0.38;
+    setCameraPreset("master");
+  } else if (step === 4) {
+    targetPlugLift = 0.65;
+    targetBatteryOpen = 0;
+    setCameraPreset("bench");
+  }
+
+  sopDone.add(step);
+  updateSopUI();
+  saveSessionState();
+
+  if (sopDone.size === 4) {
+    fb.style.display = "block";
+    fb.className = "callout callout-emerald";
+    fb.innerHTML = `
+      <div><strong>Seluruh SOP Pemeliharaan (TP 4.4) Tuntas!</strong> Alat ukur aman, baterai 9V terjaga, dan port RJ-45 tidak rusak.</div>
+      <div style="margin-top:10px;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="switchS5Tab('quiz', document.getElementById('tabS5Quiz'))">
+          Lanjut ke Asesmen 5 Soal &rarr;
+        </button>
+      </div>
+    `;
+    playSfx("ok");
+  } else {
+    fb.style.display = "none";
+    playSfx("tap");
+  }
+}
+
+function resetSopSteps() {
+  sopDone.clear();
+  targetPlugLift = 0;
+  targetBatteryOpen = 0;
+  setCameraPreset("bench");
+  document.getElementById("sopFeedback").style.display = "none";
+  updateSopUI();
+  saveSessionState();
+  playSfx("tap");
+}
+
+const quizData = [
+  {
+    q: "1. Teknisi diminta mengukur kekuatan redaman sinyal cahaya pada kabel Fiber Optik antar-gedung sekolah. Alat ukur manakah yang paling tepat digunakan?",
+    opts: ["LAN Tester", "OPM (Optical Power Meter)", "Earth Tester", "Multimeter"],
+    ans: 1,
+    exp: "<strong>OPM (Optical Power Meter)</strong> digunakan khusus untuk mengukur daya sinyal cahaya (dBm) pada kabel Fiber Optik, sedangkan LAN Tester hanya untuk kabel tembaga UTP/STP."
+  },
+  {
+    q: "2. Saat menyusun kabel UTP standar T568B dengan posisi klip pengunci RJ-45 menghadap ke bawah, warna kawat apakah yang berada pada Pin 1, 2, dan 3 dari kiri?",
+    opts: [
+      "Putih-Hijau, Hijau, Putih-Oranye",
+      "Putih-Oranye, Oranye, Putih-Hijau",
+      "Putih-Biru, Biru, Putih-Oranye",
+      "Oranye, Putih-Oranye, Hijau"
+    ],
+    ans: 1,
+    exp: "Standar <strong>T568B</strong> dimulai dari kiri (klip di bawah): <strong>1. Putih-Oranye, 2. Oranye, 3. Putih-Hijau</strong>, 4. Biru, 5. Putih-Biru, 6. Hijau, 7. Putih-Cokelat, 8. Cokelat."
+  },
+  {
+    q: "3. Pada pengujian LAN Tester mode Slow (S), LED Master menyala 1–8 lengkap, tetapi pada unit Remote LED nomor 6 tidak menyala sama sekali. Apa kesimpulan diagnosis dan tindak lanjutnya?",
+    opts: [
+      "Kabel Normal Straight — langsung pasang ke Switch",
+      "Kabel Short (Korslet) — ganti baterai LAN Tester",
+      "Kabel Open (Putus) di Pin 6 — potong konektor dan crimping ulang",
+      "Kabel Crossover — cocok untuk PC ke PC"
+    ],
+    ans: 2,
+    exp: "LED yang mati pada salah satu pin menunjukkan kondisi <strong>Open (Putus)</strong> — umumnya karena kawat kurang mentok ke ujung konektor RJ-45 saat crimping."
+  },
+  {
+    q: "4. Mengapa mode saklar 'S' (Slow) pada LAN Tester sangat disarankan saat melakukan troubleshooting kabel?",
+    opts: [
+      "Agar sinyal listrik berubah menjadi sinyal optik",
+      "Memperlambat perpindahan nyala LED sehingga urutan angka Master vs Remote mudah diamati dengan teliti",
+      "Untuk mengisi ulang baterai 9V secara otomatis",
+      "Untuk mengubah kabel Straight menjadi Crossover"
+    ],
+    ans: 1,
+    exp: "Mode <strong>S (Slow)</strong> memperlambat siklus pemindaian LED sehingga teknisi dapat mendeteksi pin yang tertukar (<em>miswired</em>) atau mati secara akurat."
+  },
+  {
+    q: "5. Manakah prosedur pemeliharaan alat ukur (TP 4.4) yang paling tepat setelah selesai praktikum LAN Tester?",
+    opts: [
+      "Biarkan saklar di posisi ON agar siap dipakai kelas berikutnya",
+      "Tarik kabel langsung tanpa menekan klip agar lebih cepat",
+      "Geser saklar ke OFF, tekan klip saat melepas RJ-45, lepas baterai bila disimpan lama, dan simpan di tempat kering",
+      "Bersihkan port RJ-45 menggunakan air sabun"
+    ],
+    ans: 2,
+    exp: "Sesuai SOP pemeliharaan: matikan saklar (<strong>OFF</strong>), tekan klip saat mencabut konektor agar pin port tidak bengkok, lepas baterai bila disimpan lama, dan simpan di tempat kering."
+  }
+];
+
+let qIdx = 0;
+let qAnswers = new Array(quizData.length).fill(null);
+
+function renderQuiz() {
+  const box = document.getElementById("quizBody");
+  const count = qAnswers.filter(x => x !== null).length;
+  document.getElementById("quizCountPill").textContent = `${count} / ${quizData.length} Terjawab`;
+  updateGlobalBadges();
+
+  const dotsHtml = `<div class="quiz-dots" aria-hidden="true">${quizData.map((it, idx) => {
+    let cls = "";
+    if (qAnswers[idx] !== null) cls = (qAnswers[idx] === it.ans) ? "right" : "wrong";
+    else if (idx === qIdx) cls = "current";
+    return `<span class="quiz-dot ${cls}"></span>`;
+  }).join("")}</div>`;
+
+  if (qIdx >= quizData.length) {
+    const ok = quizData.filter((item, i) => qAnswers[i] === item.ans).length;
+    const score = Math.round((ok / quizData.length) * 100);
+    let tier = "", cls = "";
+    if (score >= 86) { tier = "Sangat Baik (86–100) — Capaian TP tuntas! Siap melanjutkan ke praktik pengukuran Fiber Optik (OPM/OTDR)."; cls = "callout-emerald"; }
+    else if (score >= 70) { tier = "Baik (70–85) — Sudah mencapai TP! Pertahankan ketelitian saat membaca pola LED dan urutan T568B."; cls = "callout-cyan"; }
+    else { tier = "Perlu Pendampingan (< 70) — Ulangi simulasi Tahap 3 & 4 lalu coba asesmen sekali lagi."; cls = "callout-amber"; }
+
+    box.innerHTML = `
+      ${dotsHtml}
+      <div style="text-align:center; padding:8px 0;">
+        <span class="pill pill-cyan">Skor Asesmen Sumatif</span>
+        <div class="display-font tabular" style="font-size:2.2rem; font-weight:700; color:var(--accent); margin:8px 0 4px;">${score} / 100</div>
+        <p style="font-size:0.91rem;">Menjawab benar <strong>${ok} dari ${quizData.length}</strong> soal studi kasus.</p>
+        <div class="callout ${cls}" style="text-align:left;"><strong>Rekomendasi Tindak Lanjut:</strong> ${tier}</div>
+        <div class="btn-row" style="justify-content:center; margin-top:14px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="resetQuiz()">Ulangi Soal</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="goToScreen(6)">Buka Rekap &amp; Refleksi &rarr;</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const item = quizData[qIdx];
+  const chosen = qAnswers[qIdx];
+  const letters = ["A", "B", "C", "D"];
+  box.innerHTML = `
+    ${dotsHtml}
+    <div style="font-size:0.78rem; font-weight:800; color:var(--ink-muted); margin-bottom:6px;">SOAL ${qIdx + 1} DARI ${quizData.length}</div>
+    <p style="font-weight:700; font-size:0.96rem; margin-bottom:13px;">${item.q}</p>
+    ${item.opts.map((opt, i) => {
+      let c = "";
+      if (chosen !== null) {
+        if (i === item.ans) c = "correct";
+        else if (i === chosen) c = "wrong";
+      }
+      return `<button type="button" class="q-opt ${c}" ${chosen !== null ? "disabled" : ""} onclick="pickQuiz(${i})"><span class="q-letter">${letters[i]}</span><span>${opt}</span></button>`;
+    }).join("")}
+    ${chosen !== null ? `
+      <div class="callout ${chosen === item.ans ? "callout-emerald" : "callout-crimson"}">
+        <strong>${chosen === item.ans ? "Benar!" : "Kurang Tepat."}</strong> ${item.exp}
+      </div>
+      <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="nextQuiz()">${qIdx === quizData.length - 1 ? "Lihat Skor Akhir →" : "Soal Berikutnya →"}</button>
+      </div>
+    ` : ""}
+  `;
+}
+
+function pickQuiz(i) {
+  qAnswers[qIdx] = i;
+  playSfx(i === quizData[qIdx].ans ? "ok" : "err");
+  saveSessionState();
+  renderQuiz();
+}
+function nextQuiz() { qIdx++; playSfx("tap"); saveSessionState(); renderQuiz(); }
+function resetQuiz() { qIdx = 0; qAnswers = new Array(quizData.length).fill(null); playSfx("tap"); saveSessionState(); renderQuiz(); }
+
+// =========================================================================
+// 8. SCREEN 6: REFLEKSI, EXPORT LAPORAN & AUTO-SAVE SESSION
+// =========================================================================
+function addRefChip(id, txt) {
+  const el = document.getElementById(id);
+  el.value = el.value.trim() ? el.value.trim() + "; " + txt : txt;
+  saveSessionState();
+  playSfx("tap");
+}
+
+function renderFinalSummary() {
+  const { list } = getMissionsProgress();
+  document.getElementById("summaryCards").innerHTML = list.map(r => `
+    <div class="summary-row ${r.ok ? "ok" : ""}">
+      <span style="font-weight:700; font-size:0.87rem;">${r.ok ? "✓" : "•"} ${r.label}</span>
+      <div class="btn-row" style="gap:6px;">
+        <span class="pill ${r.ok ? "pill-emerald" : "pill-amber"}">${r.val}</span>
+        ${!r.ok ? `<button type="button" class="btn btn-secondary btn-sm" style="min-height:30px; padding:4px 9px; font-size:0.74rem;" onclick="goToScreen(${r.screen}${r.id === "quiz" ? ", { openQuizTab: true }" : ""})">Lengkapi &rarr;</button>` : ""}
+      </div>
+    </div>
+  `).join("");
+  updateGlobalBadges();
+}
+
+function buildReportText() {
+  const nama = document.getElementById("refNama").value.trim() || "Siswa_TKJ";
+  const kelas = document.getElementById("refKelas").value.trim() || "X TKJ";
+  const q1 = document.getElementById("refQ1").value.trim() || "-";
+  const q2 = document.getElementById("refQ2").value.trim() || "-";
+  const q3 = document.getElementById("refQ3").value.trim() || "-";
+  const { qOk, qPct } = getMissionsProgress();
+
+  return [
+    "=========================================================",
+    "LEMBAR HASIL PRAKTIK & REFLEKSI ALAT UKUR TJKT (3D LAB)",
+    "Elemen: Penggunaan Alat Ukur (TP 4.1 - 4.4) • Fase E",
+    "=========================================================",
+    `Nama / Kelompok : ${nama}`,
+    `Kelas           : ${kelas}`,
+    `Tanggal         : ${new Date().toLocaleDateString("id-ID")}`,
+    "",
+    "--- REKAP KINERJA SIMULASI 3D ---",
+    `- Inspeksi Anatomi 3D        : ${inspectedParts.size} / 6 bagian`,
+    `- Hasil Crimping RJ-45 3D    : ${lastCrimpResult.type}`,
+    `- Kasus Detektif Terpecahkan : ${detSolved.size} / 4 kasus`,
+    `- SOP Pemeliharaan 3D        : ${sopDone.size} / 4 langkah`,
+    `- Skor Asesmen Studi Kasus   : ${qPct} / 100 (${qOk}/5 benar)`,
+    "",
+    "--- REFLEKSI PEMBELAJARAN ---",
+    `1. Temuan paling penting saat menguji kabel:\n   ${q1}`,
+    `2. Kendala teknis & solusi perbaikannya:\n   ${q2}`,
+    `3. Komitmen SOP & pemeliharaan alat di lab:\n   ${q3}`,
+    "========================================================="
+  ].join("\n");
+}
+
+function downloadReport() {
+  const nama = document.getElementById("refNama").value.trim() || "Siswa_TKJ";
+  const blob = new Blob([buildReportText()], { type: "text/plain;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `laporan-praktik-lan-tester-${nama.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast("Laporan praktik (.txt) berhasil diunduh.");
+  playSfx("ok");
+}
+
+function copyReport() {
+  const txt = buildReportText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(() => {
+      showToast("Ringkasan laporan disalin ke clipboard.");
+      playSfx("ok");
+    }).catch(() => fallbackCopy(txt));
+  } else {
+    fallbackCopy(txt);
+  }
+}
+
+function fallbackCopy(txt) {
+  const ta = document.createElement("textarea");
+  ta.value = txt;
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); showToast("Ringkasan laporan disalin."); playSfx("ok"); }
+  catch (e) { showToast("Gagal menyalin otomatis. Gunakan tombol Unduh (.txt)."); }
+  document.body.removeChild(ta);
+}
+
+// LocalStorage Session Save/Restore
+function saveSessionState() {
+  try {
+    localStorage.setItem(STORAGE_SESSION, JSON.stringify({
+      inspectedParts: Array.from(inspectedParts),
+      cableTarget,
+      wireEndA,
+      wireEndB,
+      lastCrimpResult,
+      detSolved: Array.from(detSolved),
+      sopDone: Array.from(sopDone),
+      qIdx,
+      qAnswers,
+      refNama: document.getElementById("refNama")?.value || "",
+      refKelas: document.getElementById("refKelas")?.value || "X TKJ",
+      refQ1: document.getElementById("refQ1")?.value || "",
+      refQ2: document.getElementById("refQ2")?.value || "",
+      refQ3: document.getElementById("refQ3")?.value || ""
+    }));
+  } catch (e) {}
+}
+
+function restoreSavedState() {
+  try {
+    const a11yRaw = localStorage.getItem(STORAGE_A11Y);
+    if (a11yRaw) {
+      const a = JSON.parse(a11yRaw);
+      if (typeof a.fontScale === "number") fontScale = a.fontScale;
+      if (["daylight", "slate", "contrast"].includes(a.activeTheme)) activeTheme = a.activeTheme;
+      readingAid = Boolean(a.readingAid);
+      reducedMotion = Boolean(a.reducedMotion);
+      if (typeof a.sfxOn === "boolean") sfxOn = a.sfxOn;
+    }
+  } catch (e) {}
+
+  try {
+    const sRaw = localStorage.getItem(STORAGE_SESSION);
+    if (sRaw) {
+      const s = JSON.parse(sRaw);
+      if (Array.isArray(s.inspectedParts)) s.inspectedParts.forEach(p => inspectedParts.add(p));
+      if (s.cableTarget === "straight" || s.cableTarget === "cross") cableTarget = s.cableTarget;
+      if (Array.isArray(s.wireEndA) && s.wireEndA.length === 8) wireEndA = s.wireEndA;
+      if (Array.isArray(s.wireEndB) && s.wireEndB.length === 8) wireEndB = s.wireEndB;
+      if (s.lastCrimpResult) lastCrimpResult = s.lastCrimpResult;
+      if (Array.isArray(s.detSolved)) s.detSolved.forEach(idx => detSolved.add(idx));
+      if (Array.isArray(s.sopDone)) s.sopDone.forEach(st => sopDone.add(st));
+      if (typeof s.qIdx === "number") qIdx = s.qIdx;
+      if (Array.isArray(s.qAnswers) && s.qAnswers.length === quizData.length) qAnswers = s.qAnswers;
+      if (typeof s.refNama === "string") document.getElementById("refNama").value = s.refNama;
+      if (typeof s.refKelas === "string") document.getElementById("refKelas").value = s.refKelas;
+      if (typeof s.refQ1 === "string") document.getElementById("refQ1").value = s.refQ1;
+      if (typeof s.refQ2 === "string") document.getElementById("refQ2").value = s.refQ2;
+      if (typeof s.refQ3 === "string") document.getElementById("refQ3").value = s.refQ3;
+    }
+  } catch (e) {}
+}
+
+function resetAllSession() {
+  if (!confirm("Mulai ulang seluruh progres praktikum dan kosongkan lembar refleksi?")) return;
+  try { localStorage.removeItem(STORAGE_SESSION); } catch (e) {}
+  location.reload();
+}
+
+// =========================================================================
+// 9. BOOTSTRAP INITIALIZATION
+// =========================================================================
+restoreSavedState();
+initTelemetryDOM();
+initToolCatalog();
+initThree();
+applyA11ySettings();
+renderStepper();
+setCableTarget(cableTarget);
+renderDetectiveCaseNav();
+updateSopUI();
+renderQuiz();
+// Populate Screen 2 default inspect card text without hijacking Screen 1 camera
+document.getElementById("inspectCard").innerHTML = `<strong>${inspectorInfo.master.title}</strong><p style="margin-top:5px;">${inspectorInfo.master.desc}</p>`;
+document.getElementById("inspectProg").textContent = `Anatomi 3D: ${inspectedParts.size} / 6`;
+setCameraPreset("bench");
+if (focusRing) focusRing.visible = false;
+document.getElementById("detScorePill").textContent = `Skor Detektif: ${detSolved.size} / 4`;
+if (lastCrimpResult.passed) {
+  const sp = document.getElementById("crimpStatusPill");
+  sp.className = "pill pill-emerald";
+  sp.textContent = "Crimping Lolos (100%)";
+}
+updateGlobalBadges();
+</script>
+</body>
+</html>

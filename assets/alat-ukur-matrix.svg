@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 175" width="820" height="175" role="img" aria-label="Peta Alat Ukur Standar Industri TJKT">
+  <rect x="6" y="6" width="808" height="163" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="410" y="34" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0F172A" text-anchor="middle">EKOSISTEM ALAT UKUR STANDAR INDUSTRI TJKT (FASE E)</text>
+
+  <rect x="24" y="52" width="144" height="98" rx="12" fill="#0EA5E9"/>
+  <text x="96" y="84" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">LAN TESTER</text>
+  <text x="96" y="106" font-family="sans-serif" font-size="10" fill="#E0F2FE" text-anchor="middle">Konektivitas Kabel</text>
+  <text x="96" y="124" font-family="sans-serif" font-size="10" fill="#E0F2FE" text-anchor="middle">UTP / RJ-45</text>
+
+  <rect x="180" y="52" width="144" height="98" rx="12" fill="#10B981"/>
+  <text x="252" y="84" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">OPM &amp; OTDR</text>
+  <text x="252" y="106" font-family="sans-serif" font-size="10" fill="#D1FAE5" text-anchor="middle">Daya &amp; Putus Kabel</text>
+  <text x="252" y="124" font-family="sans-serif" font-size="10" fill="#D1FAE5" text-anchor="middle">Fiber Optik</text>
+
+  <rect x="336" y="52" width="144" height="98" rx="12" fill="#F59E0B"/>
+  <text x="408" y="84" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">MULTIMETER</text>
+  <text x="408" y="106" font-family="sans-serif" font-size="10" fill="#FEF3C7" text-anchor="middle">Tegangan, Arus,</text>
+  <text x="408" y="124" font-family="sans-serif" font-size="10" fill="#FEF3C7" text-anchor="middle">Hambatan Listrik</text>
+
+  <rect x="492" y="52" width="144" height="98" rx="12" fill="#6366F1"/>
+  <text x="564" y="84" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">EARTH TESTER</text>
+  <text x="564" y="106" font-family="sans-serif" font-size="10" fill="#E0E7FF" text-anchor="middle">Tahanan Pentanahan</text>
+  <text x="564" y="124" font-family="sans-serif" font-size="10" fill="#E0E7FF" text-anchor="middle">(Grounding Tower)</text>
+
+  <rect x="648" y="52" width="148" height="98" rx="12" fill="#334155"/>
+  <text x="722" y="84" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">WI-FI ANALYZER</text>
+  <text x="722" y="106" font-family="sans-serif" font-size="10" fill="#CBD5E1" text-anchor="middle">Sinyal, Speed Test</text>
+  <text x="722" y="124" font-family="sans-serif" font-size="10" fill="#CBD5E1" text-anchor="middle">&amp; Ping Test</text>
+</svg>
